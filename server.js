@@ -47,7 +47,10 @@ app.use("/mode", express.static("./mode"))
 ///get confirmed; finished, unfinished 
 app.get("/confirmed", (req, res)=>{
     console.log("............get confiremed..........")
-
+    mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
+    let dbb = client.db()
+    
+    })
 
 })
 
