@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>anybox </title>
+    <title>treeing </title>
 
     <!-- leaflet cdn -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -37,20 +37,18 @@
     <div class="step h"></div>
     <div class="body">
 
-        <div id="mapInputArea">
-            <div id="map"></div>
-            <div class="form" id="add">
-                <label for="toTreeImgs">صور للمكان</label>
-                <input type="file" id="toTreeImgs" name="toTreeImgs" multiple>
-                <button id="sendToTreeLoc">ارسال</button>
-            </div>
-        </div>
-
         <div id="profile">
             <div id="before"></div>
             <div id="after"></div>
         </div>
+        <div id="map"></div>
 
+        <div class="form" id="add">
+            <button id="addCoords">اضافة مكان</button>
+            <label for="toTreeImgs">اضافة صور للمكان</label>
+            <input type="file" id="toTreeImgs" name="toTreeImgs" multiple>
+            <button id="sendToTreeLoc">ارسال</button>
+        </div>
     </div>
 
     <div class="step f"></div>
@@ -64,10 +62,6 @@
         <a href="https://github.com/kadum2/treeing-pro">github repo</a>
 
     </footer>
-
-
-
-
 
     <script src="./script.js"></script>
 </body>
