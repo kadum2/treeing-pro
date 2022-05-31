@@ -60,24 +60,22 @@ app.get("/con-unfinished", (req, res)=>{
 
 //////multer; middleware to reset the imgs container 
 
-app.post("/uncon", (req,res)=>{
-    console.log("............post uncon.........")
+app.post("/unconUnfinished", (req,res)=>{
+    console.log("............post uncon.........", req.body)
 
     ////check if the valid data; 
-    if(typeof req.body.imgs =="  "){
+    if(typeof uncongUnfinishedImgs =="  "){
+
+        mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
+            let dbb = client.db()
+            // let result = dbb.collection("unconfirmed").insertOne({})
+            res.send(result)
+            })
 
         res.sendStatus(200)
     }else{
         res.sendStatus(400)
     }
-
-
-    mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
-    let dbb = client.db()
-    let result = dbb.collection("unconfirmed").insertOne({})
-
-    res.send(result)
-    })
 
 })
 
