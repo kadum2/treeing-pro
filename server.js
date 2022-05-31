@@ -3,7 +3,7 @@
 //express tools and configuring
 let express = require("express")
 let app = express()
-let cors = require("cors")
+let cors = require("cors") /////to remove later
 const path = require("path")
 const fs = require("fs")
 const multer  = require("multer") 
@@ -28,6 +28,11 @@ app.use("/mode", express.static("./mode"))
 
 
 
+////getting map api key; 
+
+app.get("/map-api-key", (req, res)=>{
+    res.send({apiKey: process.env.MAPAPIKEY})
+})
 
 
 ///////plan; 
@@ -53,10 +58,20 @@ app.get("/con-unfinished", (req, res)=>{
 })
 
 
-//////multer 
+//////multer; middleware to reset the imgs container 
 
 app.post("/uncon", (req,res)=>{
-    console.log("............get con-finished.........")
+    console.log("............post uncon.........")
+
+    ////check if the valid data; 
+    if(typeof req.body.imgs =="  "){
+
+        res.sendStatus(200)
+    }else{
+        res.sendStatus(400)
+    }
+
+
     mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
     let dbb = client.db()
     let result = dbb.collection("unconfirmed").insertOne({})
