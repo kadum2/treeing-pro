@@ -44,10 +44,39 @@
         <div id="map"></div>
 
         <div class="form" id="add">
-            <button id="addCoords">اضافة مكان</button>
-            <label for="toTreeImgs">اضافة صور للمكان</label>
-            <input type="file" id="toTreeImgs" name="toTreeImgs" multiple>
-            <button id="sendToTreeLoc">ارسال</button>
+            <div id="addUnconUnfinished">
+                <button id="addCoords">اضافة مكان</button>
+                <label for="toTreeImgs">اضافة صور للمكان</label>
+                <input type="file" id="toTreeImgs" name="toTreeImgs" multiple>
+                <input type="text" placeholder="الاسم ان اردت">
+                <input type="text" placeholder="اليوسرنيم ان اردت">
+                <select name="smType" id="smType">
+                    <option value="type">نوع المنصة</option>
+                    <option value="instagram">instagram <img src="/2048px-Instagram_icon.png" alt=""> </option>
+                    <option value="telegram">telegram <img src="/Telegram-Logo.png" alt=""></option>
+                </select>
+                <button id="sendUnconUnfinished">ارسال</button>
+            </div>
+
+            <div id="addUnconfinished">
+                <button id="addCoords">اضافة مكان</button>
+                <label for="beforeImgs">صور قبل</label>
+                <input type="file" id="beforeImgs" name="beforeImgs" multiple>
+
+                <label for="afterImgs">صور بعد</label>
+                <input type="file" id="afterImgs" name="afterImgs" multiple>
+
+                <input type="text" placeholder="الاسم ان اردت">
+                <input type="text" placeholder="اليوسرنيم ان اردت">
+                <select name="smType" id="smType">
+                    <option value="type">نوع المنصة</option>
+                    <option value="instagram">instagram<img src="/2048px-Instagram_icon.png" alt=""></option>
+                    <option value="telegram">telegram<img src="/Telegram-Logo.png" alt=""></option>
+                </select>
+
+                <button id="sendUnconfinished">ارسال</button>
+            </div>
+
         </div>
     </div>
 

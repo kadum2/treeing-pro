@@ -49,9 +49,7 @@ window.onload = async ()=>{
 
     //////get api key 
     let rApiKey = await fetch("/map-api-key")
-    console.log(rApiKey)
     let apiKey = await rApiKey.json()
-    console.log(apiKey)
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     maxZoom: 18,
     id: 'mapbox/streets-v11',

@@ -15,20 +15,27 @@
 
         /* imgs containers; profile*/
         #profile{
+            /* position: absolute; */
             height: 30vh;
             width: 90%;
             background: red;
+            /* z-index: 1; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
         }
         #before, #after{
             display: flex;
             gap: 1rem;
-        }
-
-
-        #map {
-            height: 70vh;
+            background: #29D659;
+            height: 90%;
             width: 90%;
-            margin-top: 2vh;
+        }
+        #map{
+            height: 90vh;
+            width: 90vw;  
+    
         }
 
         .one{
@@ -50,12 +57,28 @@
         label:hover, button:hover{
             background: #33a353;
         }
-        input{
+        input, select{
             font-size: 1.3rem;
         }
+        input[type=file]{
+            /* opacity: .5; */
+
+            display: none;
+            
+        }
+
         .form{
+            /* position: absolute; */
             width: fit-content;
             margin-top: 2rem;
+            /* z-index: 2; */
+            padding: 1rem;
+            background: rgb(105, 255, 105);
+            margin: 1rem;
+            max-width: 80%;
+            font-size: 1.5rem;
+            border-radius: 1rem;
+
         }
 
 
@@ -70,16 +93,12 @@
             border-radius: .4rem;
             transition: .1s linear;
         }
-        .form {
-            padding: 1rem;
-            background: rgb(105, 255, 105);
-            margin: 1rem;
-            max-width: 80%;
-            font-size: 1.5rem;
-            border-radius: 1rem;
-        }
         .form *{
-            margin: 1rem;
+            margin: .3rem;
+        }
+        .form div{
+            background: #a0f7b9;
+            border-radius: .2rem;
         }
 
 
@@ -122,8 +141,8 @@ header {
 
 .body {
     background: #C0F9D0;
-    height: 100%;
-    width: 100%;
+    /* height: 100vh; */
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -135,6 +154,11 @@ label{
     cursor: pointer;
     padding: .4rem;
     transition: .2s linear;
+    border-radius: .2rem;
+}
+img{
+    height: 1rem;
+    width: 1rem;
 }
 
 footer {
@@ -184,14 +208,15 @@ footer a{
         justify-content: center;
     }
     #map{
-        height: 50vh;
-        width: 70vw;
+        /* height: 50vh;
+        width: 70vw; */
+        height: 90vh;
+        width: 90vw;  
+
         /* height: 100%; */
         /* width: 100%; */
         margin-left: -4rem;
-    }
-    #profile{
-        width: 90%;
+        /* z-index: 0; */
     }
     footer{
         flex-direction: column;
