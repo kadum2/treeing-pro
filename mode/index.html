@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>treeing </title>
+
+    <!-- leaflet cdn -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+    <!-- search box -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <header class="green">
+        <!-- <div class="logo "> -->
+        <!-- <div class="black"></div>
+            <div class="red"></div>
+            <div class="white"></div> -->
+        <!-- <div class="green"></div> -->
+        <!-- </div> -->
+    </header>
+    <div class="step h"></div>
+    <div class="body">
+
+        <div id="profile">
+            <div id="before"></div>
+            <div id="after"></div>
+        </div>
+        <div id="map"></div>
+        <div id="message"></div>
+
+        <div class="form" id="add">
+            <div id="addUnconUnfinished">
+                <h4>اضافة مكان يحتاج الى زراعة </h4>
+                <button id="addUnconUnfinishedCoords">اضافة مكان</button>
+                <label for="addUnconUnfinishedImgs">اضافة صور للمكان</label>
+                <input type="file" id="addUnconUnfinishedImgs" name="addUnconUnfinishedImgs" id="addUnconUnfinishedImgs"
+                    multiple>
+                <input type="text" id="uncontUnfinishedName" placeholder="الاسم ان اردت">
+                <input type="text" id="unconUnfinisheduserName" placeholder="اليوسرنيم ان اردت">
+                <select name="smType" id="unconUnfinishedsmType">
+                    <option value="type">نوع المنصة</option>
+                    <option value="instagram">instagram <img src="/2048px-Instagram_icon.png" alt=""> </option>
+                    <option value="telegram">telegram <img src="/Telegram-Logo.png" alt=""></option>
+                </select>
+                <button id="sendUnconUnfinished">ارسال</button>
+            </div>
+
+            <div id="addUnconfinished">
+                <h4>اضافة مكان تم زراعته </h4>
+                <button id="addCoords">اضافة مكان</button>
+                <label for="beforeImgs">صور قبل</label>
+                <input type="file" id="beforeImgs" name="beforeImgs" multiple>
+
+                <label for="afterImgs">صور بعد</label>
+                <input type="file" id="afterImgs" name="afterImgs" multiple>
+
+                <input type="text" placeholder="الاسم ان اردت">
+                <input type="text" placeholder="اليوسرنيم ان اردت">
+                <select name="smType" id="smType">
+                    <option value="type">نوع المنصة</option>
+                    <option value="instagram">instagram<img src="/2048px-Instagram_icon.png" alt=""></option>
+                    <option value="telegram">telegram<img src="/Telegram-Logo.png" alt=""></option>
+                </select>
+
+                <button id="sendUnconfinished">ارسال</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="step f"></div>
+    <footer>
+        <div id="desc">
+            موقع لتسهيل حملات التشجير
+            - تسيهل تحديد الاماكن التي تحتاج الى حملات تشجير
+            - طريقة افضل لتوثيق اماكن و نتيجة الحملات
+        </div>
+
+        <a href="https://github.com/kadum2/treeing-pro" target="_blank">github repo</a>
+
+    </footer>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

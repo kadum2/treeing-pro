@@ -78,23 +78,20 @@ sendUnconUnfinished.onclick= async (e)=>{
         console.log(children[2].files)
         let fd = new FormData()
         fd.append("coords", currentCoords)
-        // Object.values(children[2].files).forEach(e=>console.log("1", e))
-        Object.values(children[2].files).forEach(e=>{
-            fd.append("unconUnfinishedImgs", e)
-        })
+        for (let i of children[2].files) {
+            fd.append(`unconUnfinishedImgs`, i);
+            console.log(i)
+        }
+
         fd.append("name", children[3].value)
         fd.append("userName", children[4].value)
         fd.append("smType", children[5].value)
+        console.log(fd)
 
         ///send 
         await fetch("/unconUnfinished", {
             method: "POST", 
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(fd)
-
+            body: fd
         })
 
 
