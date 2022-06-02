@@ -31,6 +31,12 @@
             background: #29D659;
             height: 90%;
             width: 90%;
+            flex-direction: row;
+        }
+        #before *, #after *{
+            /* background: red;
+            height: 100%;
+            width: 100%; */
         }
         #map{
             height: 90vh;
@@ -223,6 +229,49 @@ footer a{
 
     }
 
+}
+
+
+
+
+
+
+/* newer styling */
+
+
+#aContributers {
+    overflow-y: scroll;
+}
+.contri{
+    width: fit-content;
+}
+.contri *{
+    display: inline;
+}
+#before img, #after img, .smType {
+    background-image: url("../../Telegram-Logo.png");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+#beforeImgs, #afterImgs{
+    display: flex;
+    height: 80%;
+    width: 80%;
+
+}
+.tored{
+    background: red;
+}
+
+
+
+/* add coords background img */
+.addCoords, #addUnconFinishedCoords, #addUnconUnfinishedCoords {
+    background-image: url("https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png");
+    background-position: center;
+    background-size: auto;
 }
 
 

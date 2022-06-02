@@ -19,9 +19,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-
-
     <link rel="stylesheet" href="./style.css">
+
 </head>
 
 <body>
@@ -38,48 +37,94 @@
     <div class="body">
 
         <div id="profile">
-            <div id="before"></div>
-            <div id="after"></div>
+            <div id="before">
+                <div id="beforeImgs">
+                    <img alt="">
+                    <img alt="">
+                    <img alt="">
+                </div>
+                <div id="bContributers">
+                    <div class="contri">
+                        <h4 class="contributerName">name</h4>
+                        <img class="smType">
+                        <h4 class="contributerUserName">userName</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div id="after">
+                <div id="afterImgs">
+                    <img alt="">
+                    <img alt="">
+                    <img alt="">
+
+                </div>
+                <div id="aContributers">
+                    <div class="contri">
+                        <h4 class="contributerName">name</h4>
+                        <img class="smType">
+                        <h4 class="contributerUserName">userName</h4>
+                    </div>
+
+                </div>
+            </div>
         </div>
         <div id="map"></div>
         <div id="message"></div>
 
         <div class="form" id="add">
-            <div id="addUnconUnfinished">
+            <b>ثلاث صور بزوايا مختلفة</b>
+
+            <div id="addUnfinished">
                 <h4>اضافة مكان يحتاج الى زراعة </h4>
-                <button id="addUnconUnfinishedCoords">اضافة مكان</button>
-                <label for="addUnconUnfinishedImgs">اضافة صور للمكان</label>
-                <input type="file" id="addUnconUnfinishedImgs" name="addUnconUnfinishedImgs" id="addUnconUnfinishedImgs"
-                    multiple>
-                <input type="text" id="uncontUnfinishedName" placeholder="الاسم ان اردت">
-                <input type="text" id="unconUnfinisheduserName" placeholder="اليوسرنيم ان اردت">
-                <select name="smType" id="unconUnfinishedsmType">
-                    <option value="type">نوع المنصة</option>
-                    <option value="instagram">instagram <img src="/2048px-Instagram_icon.png" alt=""> </option>
-                    <option value="telegram">telegram <img src="/Telegram-Logo.png" alt=""></option>
-                </select>
-                <button id="sendUnconUnfinished">ارسال</button>
+                <button class="addCoords" id="addUnconUnfinishedCoords">اضافة مكان</button>
+                <label for="addBImgs">اضافة صور للمكان</label>
+                <input type="file" id="addBImgs" name="addBImgs" multiple>
+                <input type="text" id="name" placeholder="name or userName">
+                <button class="send" id="sendUnfinished">ارسال</button>
             </div>
 
-            <div id="addUnconfinished">
+            <div id="addFinished">
+                <h4>اضافة مكان تم زراعته </h4>
+                <button class="addCoords" id="addUnconFinishedCoords">اضافة مكان</button>
+                <label for="addBImgs">قبل</label>
+                <input type="file" id="addBImgs" name="addBImgs" multiple>
+                <label for="addAImgs">بعد</label>
+                <input type="file" id="addAImgs" name="addAImgs" multiple>
+                <input type="text" id="names" placeholder="name, userName, name, userName">
+                <button class="send" id="sendFinished">ارسال</button>
+            </div>
+
+            <div id="makeFinished">
+                <h4>زراعة المكان المحدد </h4>
+                <label for="addAImgs">بعد</label>
+                <input type="file" id="addAImgs" name="addAImgs" multiple>
+                <input type="text" id="names" placeholder="name, userName, name, userName">
+                <button class="send" id="sendFinishing">ارسال</button>
+            </div>
+
+
+            <!-- <div id="addUnconfinished">
                 <h4>اضافة مكان تم زراعته </h4>
                 <button id="addCoords">اضافة مكان</button>
-                <label for="beforeImgs">صور قبل</label>
+                <label for="beforeImgs">صور قبل </label>
                 <input type="file" id="beforeImgs" name="beforeImgs" multiple>
 
                 <label for="afterImgs">صور بعد</label>
                 <input type="file" id="afterImgs" name="afterImgs" multiple>
-
-                <input type="text" placeholder="الاسم ان اردت">
-                <input type="text" placeholder="اليوسرنيم ان اردت">
-                <select name="smType" id="smType">
-                    <option value="type">نوع المنصة</option>
-                    <option value="instagram">instagram<img src="/2048px-Instagram_icon.png" alt=""></option>
-                    <option value="telegram">telegram<img src="/Telegram-Logo.png" alt=""></option>
-                </select>
-
+                <input type="text" placeholder="names or userNames ">
                 <button id="sendUnconfinished">ارسال</button>
-            </div>
+            </div> -->
+
+            <!-- <div id="makeUnconFinished">
+                <h4>زراعة المكان المحدد </h4>
+                <label for="addUnconUnfinishedImgs">اضافة صور بعد الزراعة</label>
+                <input type="file" id="addUnconUnfinishedImgs" name="addUnconUnfinishedImgs" id="addUnconUnfinishedImgs"
+                    multiple>
+                <input type="text" id="uncontUnfinishedName" placeholder="names or userNames">
+                <button id="sendUnconUnfinished">ارسال</button>
+            </div> -->
+
 
         </div>
     </div>

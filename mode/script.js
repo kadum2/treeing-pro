@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////
+
 ////setting up 
 
 const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
@@ -31,83 +31,14 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
 
 
 
-/////data containers
+/////data containers and main elements 
 
 let currentCoords
-
-/////main elements 
-let sendUnconUnfinished = document.querySelector("#sendUnconUnfinished")
-let sendUnconFinished = document.querySelector("#sendUnconFinished")
+let currentId
 let message = document.querySelector("#message")
-
-//////dont need dom data containers; will use the e.target parent method
-let addUnconUnfinishedCoords = document.querySelector("#addUnconUnfinishedCoords")
-let addUnconUnfinishedImgs = document.querySelector("#addUnconUnfinishedImgs")
-
-
 let m
-addUnconUnfinishedCoords.onclick = () => {
-    addUnconUnfinishedCoords.classList.toggle("on")
-}
-
-map.addEventListener('click', function (ev) {
-    m?map.removeLayer(m):null
-
-    if (addUnconUnfinishedCoords.classList.contains("on")) {
-        let latlng = map.mouseEventToLatLng(ev.originalEvent);
-        let i = [latlng.lat, latlng.lng]
-        m = L.marker(i, {
-            icon: uncon
-        }).addTo(map);
-
-        currentCoords = i
-    }
-});
 
 
-sendUnconUnfinished.onclick= async (e)=>{
-    console.log(currentCoords)
-    console.log(e.target.parentElement.children)
-
-    //////check if exist then empty them 
-
-    let children = e.target.parentElement.children
-    if(children[2].files[0] && children[3].value && children[4].value && children[5].value){
-
-        message.innerHTML = ""
-        console.log(children[2].files)
-        let fd = new FormData()
-        fd.append("coords", currentCoords)
-        for (let i of children[2].files) {
-            fd.append(`unconUnfinishedImgs`, i);
-            console.log(i)
-        }
-
-        fd.append("name", children[3].value)
-        fd.append("userName", children[4].value)
-        fd.append("smType", children[5].value)
-        console.log(fd)
-
-        ///send 
-        await fetch("/unconUnfinished", {
-            method: "POST", 
-            body: fd
-        })
-
-
-        ////empty 
-    
-        children[2].files = null
-        children[3].value = ""
-        children[4].value = ""
-        // children[5].value = ""
-    }else{
-        message.innerHTML = "fill the rest input"
-    }
-}
-
-
-sendUnconFinished
 
 
 /////getting data; fetch confirmed; finished, unifinished 
@@ -128,28 +59,214 @@ window.onload = async ()=>{
 
 L.Control.geocoder().addTo(map);
 
+
     //////get con-finished; use green pin, before imgs, after imgs 
 
-    let d = await fetch("/con-finished")
-    let pd = d.json()
+    let confi= await fetch("/con-finished")
+    let pconfi= await confi.json()
+    // insertLocs()
 
-    pd.forEach(e=> {
-        ////e.imgs, e.
-    });
+    /////get con-unfinished; use red pin, current imgs
+
+    let conun= await fetch("/con-unfinished")
+    let pconun = await conun.json()
+    // insertLocs()
 
 
     /////get con-unfinished; use red pin, current imgs
 
+
+    //////uncon to insert buttons to add to list and that list of id to be confirmed
+    /////get uncon-unfinished 
+
+    let unun= await fetch("/uncon-unfinished")
+    let punun = await unun.json()
+    console.log(punun)
+    insertLocs(punun, true)
+
+    /////get uncon-finished 
+
+    let unfi= await fetch("/uncon-finished")
+    let punfi= await unfi.json()
+    // insertLocs()
+
 }
 
 
+/////insert data; make function to insert data 
+let linkedList = []
+let beforeImgsElements = []
+let afterImgsElements = []
 
 
+function insertLocs (dataList, mode){
 
+    ////make marker, insert in map, insert in linkedlist; make the label functionality 
+    ////make imgs, insert in containers (profile), insert in linkedlist
+    ////insert id in linked list 
 
-/////insert data 
+    dataList.forEach(e=>{
+        let m = L.marker(e.coords, {
+            icon: uncon
+        }).addTo(map);
+
+        m.addEventListener("click", (e)=>{
+            linkedList.forEach(ee=>{
+                if(ee.m == e.target){
+                    
+                    ////beforeImgs inserting; three imgs
+                    document.querySelector("#beforeImgs").innerHTML = ""
+                    for(let i = 0; i<3; i++){
+                        document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
+                    }
+
+                    //////before contributers 
+                    ee.bSmType == "instagram"?ee.bSmType = "":ee.bSmType = ""
+
+                    document.querySelector("#bContributers").innerHTML = `
+                    <div class="contri">
+                        <h4 class="contributerName">${ee.bName}</h4>
+                        <img class="smType" style='background-image: url("../instagram-icon.jpg");    background-size: cover;
+                        background-position: center;
+                        height: 100%;
+                        width: 100%;
+                    '>
+                        <h4 class="contributerUserName">${ee.bUserName}</h4>
+                    </div>`
+
+                    /////after; 
+                    document.querySelector("#aContributers").innerHTML = `
+                    `
+
+                }
+            })
+        })
+
+        beforeImgsElements = []
+        e.beforeImgs.forEach(e=>{
+            let img = document.createElement("img")
+            img.style.backgroundImage = `url('../${e}')`
+            img.style.backgroundSize = "cover"
+            img.style.backgroundPosition = "center"
+
+            beforeImgsElements.push(img)
+            
+        })
+
+        if(e.afterImgs[0]){
+            afterImgsElements = []
+
+            for(let i = 0; i<4; i++){
+
+                let img = document.createElement("img")
+                img.style.backgroundImage = `url('../${e.afterImgs[i]}')`
+                img.style.backgroundSize = "cover"
+                img.style.backgroundPosition = "center"
+                afterImgsElements.push(img)
+            }
+        }
+
+        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e.id, afterImgsElements: afterImgsElements, bName: e.bName, bUserName: e.bUserName, aNames: e.aNames, aUserNames: e.aUserNames})
+    })
+
+    if(mode){ ///insert buttons 
+        console.log("adding buttons")
+
+    }
+
+}
+
 
 ////send data 
+
+/////adding loc
+
+document.querySelector(".addCoords").onclick = () => {
+    document.querySelector(".addCoords").classList.toggle("red")
+}
+
+map.addEventListener('click', function (ev) {
+    m?map.removeLayer(m):null
+    if (addUnconUnfinishedCoords.classList.contains("red")) {
+        let latlng = map.mouseEventToLatLng(ev.originalEvent);
+        let i = [latlng.lat, latlng.lng]
+        m = L.marker(i, {
+            icon: uncon
+        }).addTo(map);
+
+        currentCoords = i
+    }
+});
+
+
+document.querySelector(".send").onclick= async (e)=>{
+    console.log(currentCoords)
+    console.log(e.target.parentElement.children)
+
+    //////check if exist then empty them 
+
+    let children = e.target.parentElement.children
+
+    let aChildren = [...children]
+    aChildren.forEach(e=>console.log(e))
+
+
+
+    if((currentCoords || currentId) && children[3].files[0] && children[3].files[1] && children[3].files[2]){
+
+        message.innerHTML = ""
+        // console.log(children[3].files)
+        let fd = new FormData()
+
+        /////coords 
+        e.target.getAttribute("id") == "sendUnfinished" || e.target.getAttribute("id") == "sendFinished"?fd.append("coords", currentCoords):fd.append("coords", currentId)
+
+        /////imgs 
+        if(aChildren.find(e=>e.getAttribute("id") == "addBImgs")){
+            for (let i of aChildren.find(e=>e.getAttribute("id") == "addBImgs").files) {
+                fd.append(`bImgs`, i);
+            }
+            }else if(aChildren.find(e=>e.getAttribute("id") == "addAImgs")){
+                for (let i of aChildren.find(e=>e.getAttribute("id") == "addAImgs").files) {
+                    fd.append(`aImgs`, i);
+                }
+            }
+
+        /////names 
+        fd.append("names", aChildren.find(e=>e.getAttribute("id") == "names").value)
+
+
+        for (let i of children[3].files) {
+            fd.append(`beforeImgs`, i);
+            // console.log(i)
+        }
+        fd.append("name", children[4].value)
+        fd.append("userName", children[5].value)
+        fd.append("smType", children[6].value)
+
+        console.log(fd)
+
+
+        ///send 
+        
+        
+        // await fetch("/uncon-unfinished", {
+        //     method: "POST", 
+        //     body: fd
+        // })
+
+
+        ////empty 
+        children[3].files = null
+        children[4].value = ""
+        children[5].value = ""
+        map.removeLayer(m)
+        currentCoords = ""
+        // children[6].value = ""
+    }else{
+        message.innerHTML = "fill the rest input"
+    }
+}
 
 
 
