@@ -103,19 +103,19 @@ app.get("/map-api-key", (req, res)=>{
 ///////plan; 
 //////home 
 ///get confirmed; finished, unfinished 
-app.get("/con-finished", (req, res)=>{
+app.get("/con-finished", async (req, res)=>{
     console.log("............get con-finished.........")
     mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
     let dbb = client.db()
-    let result = dbb.collection("con-finished").find({}).toArray()
+    let result = await dbb.collection("con-finished").find({}).toArray()
     res.send(result)
     })
 })
-app.get("/con-unfinished", (req, res)=>{
+app.get("/con-unfinished", async (req, res)=>{
     console.log("............get con-unfinished..........")
     mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
     let dbb = client.db()
-    let result = dbb.collection("con-unfinished").find({}).toArray()
+    let result = await dbb.collection("con-unfinished").find({}).toArray()
     res.send(result)
     })
 })
@@ -198,8 +198,6 @@ app.post("/uncon-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = [];
         }
 })
 
-
-
 /////finished; mode 
 app.post("/con-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
     console.log(req.body)
@@ -212,7 +210,7 @@ app.post("/con-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; nex
             console.log("valid data")
             mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
                 let dbb = client.db()
-                await dbb.collection("con-unfinished").insertOne({
+                await dbb.collection("con-finished").insertOne({
                     coords: req.body.coords.split(","),
                     bName: [], 
                     beforeImgs: beforeImgs,

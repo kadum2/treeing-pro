@@ -14,7 +14,7 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
 
         ////getting icon; icon is special object not just an image
         let conFinished = L.icon({
-            iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-red.png?raw=true",
+            iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-green.png?raw=true",
             shadowSize: [50, 64], // size of the shadow
             shadowAnchor: [4, 62], // the same for the shadow
             iconSize: [25, 41],
@@ -59,17 +59,110 @@ L.Control.geocoder().addTo(map);
 
     //////get con-finished; use green pin, before imgs, after imgs 
 
-    let d = await fetch("/con-finished")
-    let pd = d.json()
+    let confi= await fetch("/con-finished")
+    let pconfi= await confi.json()
+    console.log(pconfi)
+    pconfi[0]?insertLocs(pconfi, conFinished ):null
+    // Object.entries(pconfi).length != 0?insertLocs(pconfi):null
+    // if(pconfi){insertLocs(pconfi)}
 
-    pd.forEach(e=> {
-        ////e.imgs, e.
-    });
+    /////get con-unfinished; use red pin, current imgs
+
+    let conun= await fetch("/con-unfinished")
+    let pconun = await conun.json()
+    console.log(pconun)
+    pconun[0]?insertLocs(pconun, conUnfinished ):null
+    // Object.entries(pconfi).length != 0?insertLocs(pconfi):null
 
 
     /////get con-unfinished; use red pin, current imgs
 
 }
+
+
+/////insert data; make function to insert data 
+let linkedList = []
+let beforeImgsElements = []
+let afterImgsElements = []
+
+function insertLocs (dataList, pin){
+
+    ////make marker, insert in map, insert in linkedlist; make the label functionality 
+    ////make imgs, insert in containers (profile), insert in linkedlist
+    ////insert id in linked list 
+
+    dataList.forEach(e=>{
+        let m = L.marker(e.coords, {
+            icon: pin
+        }).addTo(map);
+
+        m.addEventListener("click", (e)=>{
+
+            document.querySelector("#beforeImgs").innerHTML = ""
+            document.querySelector("#bContributers").innerHTML = "" 
+            document.querySelector("#afterImgs").innerHTML = ""
+            document.querySelector("#aContributers").innerHTML = "" 
+
+
+            linkedList.forEach(ee=>{
+                if(ee.m == e.target){
+                    
+                    ////beforeImgs inserting; three imgs
+                    for(let i = 0; i<3; i++){
+                        document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
+                    }
+
+                    //////before contributers
+                    document.querySelector("#bContributers").innerHTML = `
+                    <div class="contri">
+                        <h4 class="contributerName">${ee.bName}</h4>
+                    </div>`
+
+                    /////after;
+                    for(let i = 0; i<3; i++){
+                        document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
+                    }
+
+                    document.querySelector("#aContributers").innerHTML = `
+                    <div class="contri">
+                        <h4 class="contributerName">${ee.aNames}</h4>
+                    </div>`
+
+                }
+            })
+        })
+
+        beforeImgsElements = []
+        e.beforeImgs.forEach(e=>{
+            let img = document.createElement("img")
+            img.style.backgroundImage = `url('../${e}')`
+            img.style.backgroundSize = "cover"
+            img.style.backgroundPosition = "center"
+
+            beforeImgsElements.push(img)
+            
+        })
+        afterImgsElements = []
+
+        if(e.afterImgs[0]){
+
+            for(let i = 0; i<4; i++){
+
+                let img = document.createElement("img")
+                img.style.backgroundImage = `url('../${e.afterImgs[i]}')`
+                img.style.backgroundSize = "cover"
+                img.style.backgroundPosition = "center"
+                afterImgsElements.push(img)
+            }
+        }
+
+        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e.id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames})
+    })
+
+}
+
+
+
 
 
 

@@ -200,7 +200,6 @@ map.addEventListener('click', function (ev) {
 
 ////send data 
 
-
 document.querySelectorAll(".send").forEach(ee=>{
 
 ee.onclick= async (e)=>{
