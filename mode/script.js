@@ -181,9 +181,10 @@ function insertLocs (dataList, mode){
 
 /////adding loc
 
-document.querySelector(".addCoords").onclick = () => {
+document.querySelectorAll(".addCoords").forEach(e=>{
+e.onclick = () => {
     document.querySelector(".addCoords").classList.toggle("red")
-}
+}})
 
 map.addEventListener('click', function (ev) {
     m?map.removeLayer(m):null
@@ -199,7 +200,9 @@ map.addEventListener('click', function (ev) {
 });
 
 
-document.querySelector(".send").onclick= async (e)=>{
+document.querySelectorAll(".send").forEach(ee=>{
+
+ee.onclick= async (e)=>{
     console.log(currentCoords)
     console.log(e.target.parentElement.children)
 
@@ -222,34 +225,44 @@ document.querySelector(".send").onclick= async (e)=>{
         e.target.getAttribute("id") == "sendUnfinished" || e.target.getAttribute("id") == "sendFinished"?fd.append("coords", currentCoords):fd.append("coords", currentId)
 
         /////imgs 
-        if(aChildren.find(e=>e.getAttribute("id") == "addBImgs")){
-            for (let i of aChildren.find(e=>e.getAttribute("id") == "addBImgs").files) {
+        if(aChildren.find(e=>e.getAttribute("class") == "addBImgs")){
+            console.log("found b img", aChildren.find(e=>e.getAttribute("class") == "addBImgs").files)
+            for (let i of aChildren.find(e=>e.getAttribute("class") == "addBImgs").files) {
                 fd.append(`bImgs`, i);
             }
-            }else if(aChildren.find(e=>e.getAttribute("id") == "addAImgs")){
-                for (let i of aChildren.find(e=>e.getAttribute("id") == "addAImgs").files) {
-                    fd.append(`aImgs`, i);
-                }
+            }
+        if(aChildren.find(e=>e.getAttribute("class") == "addAImgs")){
+            console.log("found a img", aChildren.find(e=>e.getAttribute("class") == "addAImgs").files)
+            for (let i of aChildren.find(e=>e.getAttribute("class") == "addAImgs").files) {
+                fd.append(`aImgs`, i);
+            }
             }
 
         /////names 
-        fd.append("names", aChildren.find(e=>e.getAttribute("id") == "names").value)
-
-
-        for (let i of children[3].files) {
-            fd.append(`beforeImgs`, i);
-            // console.log(i)
-        }
-        fd.append("name", children[4].value)
-        fd.append("userName", children[5].value)
-        fd.append("smType", children[6].value)
+        fd.append("names", aChildren.find(e=>e.getAttribute("class") == "names").value)
 
         console.log(fd)
 
 
         ///send 
-        
-        
+        if(e.target.getAttribute("id")=="sendUnfinished"){
+            await fetch("/unfinished", {
+                method: "POST", 
+                body: fd
+            })
+        }else if(e.target.getAttribute("id")=="sendFinished"){
+            await fetch("/finished", {
+                method: "POST", 
+                body: fd
+            })
+        }else if (e.target.getAttribute("id")=="sendFinishing"){
+            await fetch("/finishing", {
+                method: "POST", 
+                body: fd
+            })
+        }
+
+
         // await fetch("/uncon-unfinished", {
         //     method: "POST", 
         //     body: fd
@@ -267,6 +280,7 @@ document.querySelector(".send").onclick= async (e)=>{
         message.innerHTML = "fill the rest input"
     }
 }
+})
 
 
 

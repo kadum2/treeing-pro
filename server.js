@@ -72,21 +72,19 @@ let beforeImgs = []
 let afterImgs = []
 let basicStoringPlan = multer.diskStorage({
     destination: "./public-imgs",
-    filename: (req, file, cb)=>{
+    filename: async (req, file, cb)=>{
         console.log(file)
 
-        if(file.fieldname == "beforeImgs"){
-            let path = new Date().toISOString().replace(/:/g, '-') +file.originalname.replaceAll(" ", "")
+        if(file.fieldname == "bImgs"){
+            let path = await new Date().toISOString().replace(/:/g, '-') +file.originalname.replaceAll(" ", "")
             beforeImgs.push(path)
             cb(null, path)
-    
-        }else if(file.fieldname == "afterImgs"){
-            let path = new Date().toISOString().replace(/:/g, '-') +file.originalname.replaceAll(" ", "")
+        }
+        if(file.fieldname == "aImgs"){
+            let path = await new Date().toISOString().replace(/:/g, '-') +file.originalname.replaceAll(" ", "")
             afterImgs.push(path)
             cb(null, path)
-    
         }
-
     }
 })
 let multerBasic = multer({storage: basicStoringPlan})
@@ -121,7 +119,7 @@ app.get("/con-unfinished", (req, res)=>{
     })
 })
 
-/
+
 ////add loc; use the same plan, check if have token (authorized) then insert to con directly 
 
 
@@ -153,7 +151,23 @@ app.post("/uncon-Unfinished",(req, res, next)=>{beforeImgs= []; afterImgs = []; 
 
 
 
+////finished 
+app.post("/unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()}, multerBasic.array("bImgs"), (req, res)=>{
+    console.log(req.body)
+    ////if mode save it in con; else in uncon 
+})
 
+// app.use((req, res, next)=>{beforeImgs= []; next()}, multerBasic.array("bImgs"))
+// app.use((req, res, next)=>{afterImgs= []; next()}, multerBasic.array("aImgs"))
+
+// app.use(multerBasic.)
+app.post("/finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
+    console.log(req.body)
+    console.log(beforeImgs)
+    console.log(afterImgs)
+
+    ////if mode save it in con; else in uncon 
+})
 
 
 
