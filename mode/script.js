@@ -98,7 +98,6 @@ let linkedList = []
 let beforeImgsElements = []
 let afterImgsElements = []
 
-
 function insertLocs (dataList, mode){
 
     ////make marker, insert in map, insert in linkedlist; make the label functionality 
@@ -177,7 +176,6 @@ function insertLocs (dataList, mode){
 }
 
 
-////send data 
 
 /////adding loc
 
@@ -198,6 +196,9 @@ map.addEventListener('click', function (ev) {
         currentCoords = i
     }
 });
+
+
+////send data 
 
 
 document.querySelectorAll(".send").forEach(ee=>{
@@ -246,36 +247,30 @@ ee.onclick= async (e)=>{
 
         ///send 
         if(e.target.getAttribute("id")=="sendUnfinished"){
-            await fetch("/unfinished", {
+            await fetch("/con-unfinished", {
                 method: "POST", 
                 body: fd
             })
         }else if(e.target.getAttribute("id")=="sendFinished"){
-            await fetch("/finished", {
+            await fetch("/con-finished", {
                 method: "POST", 
                 body: fd
             })
         }else if (e.target.getAttribute("id")=="sendFinishing"){
-            await fetch("/finishing", {
+            await fetch("/con-finishing", {
                 method: "POST", 
                 body: fd
             })
         }
 
-
-        // await fetch("/uncon-unfinished", {
-        //     method: "POST", 
-        //     body: fd
-        // })
-
-
         ////empty 
-        children[3].files = null
-        children[4].value = ""
-        children[5].value = ""
+        aChildren.find(e=>e.getAttribute("class") == "names").value = ""
+        if(aChildren.find(e=>e.getAttribute("class") == "addAImgs")){aChildren.find(e=>e.getAttribute("class") == "addAImgs").files = null}
+        if(aChildren.find(e=>e.getAttribute("class") == "addBImgs")){aChildren.find(e=>e.getAttribute("class") == "addBImgs").files = null}
+        
+
         map.removeLayer(m)
         currentCoords = ""
-        // children[6].value = ""
     }else{
         message.innerHTML = "fill the rest input"
     }

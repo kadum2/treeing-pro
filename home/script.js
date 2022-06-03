@@ -31,83 +31,12 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
 
 
 
-/////data containers
+/////data containers and main elements 
 
 let currentCoords
-
-/////main elements 
-let sendUnconUnfinished = document.querySelector("#sendUnconUnfinished")
-let sendUnconFinished = document.querySelector("#sendUnconFinished")
+let currentId
 let message = document.querySelector("#message")
-
-//////dont need dom data containers; will use the e.target parent method
-let addUnconUnfinishedCoords = document.querySelector("#addUnconUnfinishedCoords")
-let addUnconUnfinishedImgs = document.querySelector("#addUnconUnfinishedImgs")
-
-
 let m
-addUnconUnfinishedCoords.onclick = () => {
-    addUnconUnfinishedCoords.classList.toggle("on")
-}
-
-map.addEventListener('click', function (ev) {
-    m?map.removeLayer(m):null
-
-    if (addUnconUnfinishedCoords.classList.contains("on")) {
-        let latlng = map.mouseEventToLatLng(ev.originalEvent);
-        let i = [latlng.lat, latlng.lng]
-        m = L.marker(i, {
-            icon: uncon
-        }).addTo(map);
-
-        currentCoords = i
-    }
-});
-
-
-sendUnconUnfinished.onclick= async (e)=>{
-    console.log(currentCoords)
-    console.log(e.target.parentElement.children)
-
-    //////check if exist then empty them 
-
-    let children = e.target.parentElement.children
-    if(children[2].files[0] && children[3].value && children[4].value && children[5].value){
-
-        message.innerHTML = ""
-        console.log(children[2].files)
-        let fd = new FormData()
-        fd.append("coords", currentCoords)
-        for (let i of children[2].files) {
-            fd.append(`unconUnfinishedImgs`, i);
-            console.log(i)
-        }
-
-        fd.append("name", children[3].value)
-        fd.append("userName", children[4].value)
-        fd.append("smType", children[5].value)
-        console.log(fd)
-
-        ///send 
-        await fetch("/unconUnfinished", {
-            method: "POST", 
-            body: fd
-        })
-
-
-        ////empty 
-    
-        children[2].files = null
-        children[3].value = ""
-        children[4].value = ""
-        // children[5].value = ""
-    }else{
-        message.innerHTML = "fill the rest input"
-    }
-}
-
-
-sendUnconFinished
 
 
 /////getting data; fetch confirmed; finished, unifinished 
@@ -144,12 +73,109 @@ L.Control.geocoder().addTo(map);
 
 
 
-
-
-
-/////insert data 
+/////adding loc
+document.querySelectorAll(".addCoords").forEach(e=>{
+    e.onclick = () => {
+        document.querySelector(".addCoords").classList.toggle("red")
+    }})
+    
+    map.addEventListener('click', function (ev) {
+        m?map.removeLayer(m):null
+        if (addUnconUnfinishedCoords.classList.contains("red")) {
+            let latlng = map.mouseEventToLatLng(ev.originalEvent);
+            let i = [latlng.lat, latlng.lng]
+            m = L.marker(i, {
+                icon: uncon
+            }).addTo(map);
+    
+            currentCoords = i
+        }
+    });
 
 ////send data 
+
+
+document.querySelectorAll(".send").forEach(ee=>{
+
+    ee.onclick= async (e)=>{
+        console.log(currentCoords)
+        console.log(e.target.parentElement.children)
+    
+        //////check if exist then empty them 
+    
+        let children = e.target.parentElement.children
+    
+        let aChildren = [...children]
+        aChildren.forEach(e=>console.log(e))
+    
+    
+    
+        if((currentCoords || currentId) && children[3].files[0] && children[3].files[1] && children[3].files[2]){
+    
+            message.innerHTML = ""
+            // console.log(children[3].files)
+            let fd = new FormData()
+    
+            /////coords 
+            e.target.getAttribute("id") == "sendUnfinished" || e.target.getAttribute("id") == "sendFinished"?fd.append("coords", currentCoords):fd.append("coords", currentId)
+    
+            /////imgs 
+            if(aChildren.find(e=>e.getAttribute("class") == "addBImgs")){
+                console.log("found b img", aChildren.find(e=>e.getAttribute("class") == "addBImgs").files)
+                for (let i of aChildren.find(e=>e.getAttribute("class") == "addBImgs").files) {
+                    fd.append(`bImgs`, i);
+                }
+                }
+            if(aChildren.find(e=>e.getAttribute("class") == "addAImgs")){
+                console.log("found a img", aChildren.find(e=>e.getAttribute("class") == "addAImgs").files)
+                for (let i of aChildren.find(e=>e.getAttribute("class") == "addAImgs").files) {
+                    fd.append(`aImgs`, i);
+                }
+                }
+    
+            /////names 
+            fd.append("names", aChildren.find(e=>e.getAttribute("class") == "names").value)
+    
+            console.log(fd)
+    
+
+            ///send 
+            if(e.target.getAttribute("id")=="sendUnfinished"){
+                console.log("sending")
+                await fetch("/uncon-unfinished", {
+                    method: "POST", 
+                    body: fd
+                })
+            }else if(e.target.getAttribute("id")=="sendFinished"){
+                await fetch("/uncon-finished", {
+                    method: "POST", 
+                    body: fd
+                })
+            }else if (e.target.getAttribute("id")=="sendFinishing"){
+                await fetch("/uncon-finishing", {
+                    method: "POST", 
+                    body: fd
+                })
+            }
+    
+    
+    
+    
+            ////empty 
+        ////empty 
+        aChildren.find(e=>e.getAttribute("class") == "names").value = ""
+        if(aChildren.find(e=>e.getAttribute("class") == "addAImgs")){aChildren.find(e=>e.getAttribute("class") == "addAImgs").files = null}
+        if(aChildren.find(e=>e.getAttribute("class") == "addBImgs")){aChildren.find(e=>e.getAttribute("class") == "addBImgs").files = null}
+        
+
+        map.removeLayer(m)
+        currentCoords = ""
+        }else{
+            message.innerHTML = "fill the rest input"
+        }
+    }
+    })
+    
 
 
 

@@ -43,8 +43,44 @@
         </div>
         <div id="map"></div>
         <div id="message"></div>
-
         <div class="form" id="add">
+            <b>ثلاث صور بزوايا مختلفة</b>
+
+            <div id="addUnfinished">
+                <h4>اضافة مكان يحتاج الى زراعة </h4>
+                <button class="addCoords" id="addUnconUnfinishedCoords">اضافة مكان</button>
+                <label for="addBImgs">اضافة صور للمكان</label>
+                <input type="file" id="addBImgs" name="addBImgs" class="addBImgs" multiple>
+                <input type="text" class="names" placeholder="name or userName">
+                <button class="send" id="sendUnfinished">ارسال</button>
+            </div>
+
+            <div id="addFinished">
+                <h4>اضافة مكان تم زراعته </h4>
+                <button class="addCoords" id="addUnconFinishedCoords">اضافة مكان</button>
+                <label for="addAAImgs">بعد</label>
+                <input type="file" id="addAAImgs" name="addAAImgs" class="addAImgs" multiple>
+
+                <label for="addBBImgs">قبل</label>
+                <input type="file" id="addBBImgs" name="addBBImgs" class="addBImgs" multiple>
+
+                <input type="text" class="names" placeholder="name, userName, name, userName">
+                <button class="send" id="sendFinished">ارسال</button>
+            </div>
+
+            <div id="makeFinished">
+                <h4>زراعة المكان المحدد </h4>
+                <label for="addAImgs">بعد</label>
+                <input type="file" id="addAImgs" name="addAImgs" class="addAImgs" multiple>
+                <input type="text" class="names" placeholder="name, userName, name, userName">
+                <button class="send" id="sendFinishing">ارسال</button>
+            </div>
+
+
+        </div>
+
+
+        <!-- <div class="form" id="add">
             <div id="addUnconUnfinished">
                 <h4>اضافة مكان يحتاج الى زراعة </h4>
                 <button id="addUnconUnfinishedCoords">اضافة مكان</button>
@@ -81,7 +117,8 @@
                 <button id="sendUnconfinished">ارسال</button>
             </div>
 
-        </div>
+        </div> -->
+
     </div>
 
     <div class="step f"></div>
@@ -93,6 +130,7 @@
         </div>
 
         <a href="https://github.com/kadum2/treeing-pro" target="_blank">github repo</a>
+        <a href="coaster-route-polyline.herokuapp.com">لتسهيل الوصول الى اماكن الحملات </a>
 
     </footer>
 
