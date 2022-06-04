@@ -1,6 +1,7 @@
 
 ////setting up 
 
+
 const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
 
         ////////the required labels
@@ -14,7 +15,7 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
 
         ////getting icon; icon is special object not just an image
         let conFinished = L.icon({
-            iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-red.png?raw=true",
+            iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-green.png?raw=true",
             shadowSize: [50, 64], // size of the shadow
             shadowAnchor: [4, 62], // the same for the shadow
             iconSize: [25, 41],
@@ -35,6 +36,7 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
 
 let currentCoords
 let currentId
+let currentM
 let message = document.querySelector("#message")
 let m
 
@@ -64,13 +66,13 @@ L.Control.geocoder().addTo(map);
 
     let confi= await fetch("/con-finished")
     let pconfi= await confi.json()
-    // insertLocs()
+    insertLocs(pconfi, false, conFinished)
 
     /////get con-unfinished; use red pin, current imgs
 
     let conun= await fetch("/con-unfinished")
     let pconun = await conun.json()
-    // insertLocs()
+    insertLocs(pconun, false, conUnfinished)
 
 
     /////get con-unfinished; use red pin, current imgs
@@ -88,9 +90,9 @@ L.Control.geocoder().addTo(map);
 
     let unfi= await fetch("/uncon-finished")
     let punfi= await unfi.json()
-    // insertLocs()
-
+    insertLocs(punfi,true)
 }
+
 
 
 /////insert data; make function to insert data 
@@ -98,44 +100,94 @@ let linkedList = []
 let beforeImgsElements = []
 let afterImgsElements = []
 
-function insertLocs (dataList, mode){
+//////data lists to send 
+
+let toConfirm = []
+let toDelete = []
+
+
+function insertLocs (dataList,needconf ,pin){
 
     ////make marker, insert in map, insert in linkedlist; make the label functionality 
     ////make imgs, insert in containers (profile), insert in linkedlist
     ////insert id in linked list 
 
     dataList.forEach(e=>{
-        let m = L.marker(e.coords, {
-            icon: uncon
-        }).addTo(map);
-
+        let m 
+        if(pin){
+            m = L.marker(e.coords, {
+                icon: pin
+            }).addTo(map);
+        
+        }else{
+            m = L.marker(e.coords).addTo(map);
+        }
         m.addEventListener("click", (e)=>{
+
+            document.querySelector("#beforeImgs").innerHTML = ""
+            document.querySelector("#bContributers").innerHTML = "" 
+            document.querySelector("#afterImgs").innerHTML = ""
+            document.querySelector("#aContributers").innerHTML = "" 
+
             linkedList.forEach(ee=>{
                 if(ee.m == e.target){
-                    
+                    currentId = ee.id
+                    currentM = ee.m
+
                     ////beforeImgs inserting; three imgs
-                    document.querySelector("#beforeImgs").innerHTML = ""
                     for(let i = 0; i<3; i++){
                         document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
                     }
 
-                    //////before contributers 
-                    ee.bSmType == "instagram"?ee.bSmType = "":ee.bSmType = ""
-
+                    //////before contributers
                     document.querySelector("#bContributers").innerHTML = `
                     <div class="contri">
                         <h4 class="contributerName">${ee.bName}</h4>
-                        <img class="smType" style='background-image: url("../instagram-icon.jpg");    background-size: cover;
-                        background-position: center;
-                        height: 100%;
-                        width: 100%;
-                    '>
-                        <h4 class="contributerUserName">${ee.bUserName}</h4>
                     </div>`
 
-                    /////after; 
+                    /////after;
+                    for(let i = 0; i<3; i++){
+                        document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
+                    }
+
                     document.querySelector("#aContributers").innerHTML = `
-                    `
+                    <div class="contri">
+                        <h4 class="contributerName">${ee.aNames}</h4>
+                    </div>`
+
+                    document.querySelector("#buttons").innerHTML = ""
+                    if(needconf){
+                        let conf = document.createElement("button")
+                        conf.textContent = "confirm"
+                        conf.addEventListener("click", (e)=>{
+                            document.querySelector("#beforeImgs").innerHTML = ""
+                            document.querySelector("#bContributers").innerHTML = "" 
+                            document.querySelector("#afterImgs").innerHTML = ""
+                            document.querySelector("#aContributers").innerHTML = "" 
+
+                            toConfirm.push(currentId)
+
+                            map.removeLayer(currentM)
+                            document.querySelector("#buttons").innerHTML = ""
+
+                        })
+
+                        let del = document.createElement("button")
+                        del.textContent = "delete"
+                        del.addEventListener("click", (e)=>{
+                            document.querySelector("#beforeImgs").innerHTML = ""
+                            document.querySelector("#bContributers").innerHTML = "" 
+                            document.querySelector("#afterImgs").innerHTML = ""
+                            document.querySelector("#aContributers").innerHTML = "" 
+                            toDelete.push(currentId)
+
+                            map.removeLayer(currentM)
+                            document.querySelector("#buttons").innerHTML = ""
+
+                        })
+
+                        document.querySelector("#buttons").append(conf, del)
+                    }
 
                 }
             })
@@ -149,11 +201,10 @@ function insertLocs (dataList, mode){
             img.style.backgroundPosition = "center"
 
             beforeImgsElements.push(img)
-            
         })
+        afterImgsElements = []
 
         if(e.afterImgs[0]){
-            afterImgsElements = []
 
             for(let i = 0; i<4; i++){
 
@@ -165,15 +216,95 @@ function insertLocs (dataList, mode){
             }
         }
 
-        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e.id, afterImgsElements: afterImgsElements, bName: e.bName, bUserName: e.bUserName, aNames: e.aNames, aUserNames: e.aUserNames})
+        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames})
     })
 
-    if(mode){ ///insert buttons 
-        console.log("adding buttons")
-
-    }
-
 }
+
+
+
+
+// /////insert data; make function to insert data 
+// let linkedList = []
+// let beforeImgsElements = []
+// let afterImgsElements = []
+
+// function insertLocs (dataList, mode){
+
+//     ////make marker, insert in map, insert in linkedlist; make the label functionality 
+//     ////make imgs, insert in containers (profile), insert in linkedlist
+//     ////insert id in linked list 
+
+//     dataList.forEach(e=>{
+//         let m = L.marker(e.coords, {
+//             icon: uncon
+//         }).addTo(map);
+
+//         m.addEventListener("click", (e)=>{
+//             linkedList.forEach(ee=>{
+//                 if(ee.m == e.target){
+                    
+//                     ////beforeImgs inserting; three imgs
+//                     document.querySelector("#beforeImgs").innerHTML = ""
+//                     for(let i = 0; i<3; i++){
+//                         document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
+//                     }
+
+//                     //////before contributers 
+//                     ee.bSmType == "instagram"?ee.bSmType = "":ee.bSmType = ""
+
+//                     document.querySelector("#bContributers").innerHTML = `
+//                     <div class="contri">
+//                         <h4 class="contributerName">${ee.bName}</h4>
+//                         <img class="smType" style='background-image: url("../instagram-icon.jpg");    background-size: cover;
+//                         background-position: center;
+//                         height: 100%;
+//                         width: 100%;
+//                     '>
+//                         <h4 class="contributerUserName">${ee.bUserName}</h4>
+//                     </div>`
+
+//                     /////after; 
+//                     document.querySelector("#aContributers").innerHTML = `
+//                     `
+
+//                 }
+//             })
+//         })
+
+//         beforeImgsElements = []
+//         e.beforeImgs.forEach(e=>{
+//             let img = document.createElement("img")
+//             img.style.backgroundImage = `url('../${e}')`
+//             img.style.backgroundSize = "cover"
+//             img.style.backgroundPosition = "center"
+
+//             beforeImgsElements.push(img)
+            
+//         })
+
+//         if(e.afterImgs[0]){
+//             afterImgsElements = []
+
+//             for(let i = 0; i<4; i++){
+
+//                 let img = document.createElement("img")
+//                 img.style.backgroundImage = `url('../${e.afterImgs[i]}')`
+//                 img.style.backgroundSize = "cover"
+//                 img.style.backgroundPosition = "center"
+//                 afterImgsElements.push(img)
+//             }
+//         }
+
+//         linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e.id, afterImgsElements: afterImgsElements, bName: e.bName, bUserName: e.bUserName, aNames: e.aNames, aUserNames: e.aUserNames})
+//     })
+
+//     if(mode){ ///insert buttons 
+//         console.log("adding buttons")
+
+//     }
+
+// }
 
 
 
@@ -276,6 +407,15 @@ ee.onclick= async (e)=>{
 }
 })
 
+document.querySelector("#sendMode").addEventListener("click", async (e)=>{
+    let sent = await fetch("/sendMode", {
+        method: "POST", 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify({toConfirm, toDelete})
+    })
 
+    toConfirm = []
+    toDelete = []
+})
 
 

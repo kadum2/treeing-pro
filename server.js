@@ -198,6 +198,7 @@ app.post("/uncon-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = [];
         }
 })
 
+
 /////finished; mode 
 app.post("/con-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
     console.log(req.body)
@@ -292,6 +293,47 @@ app.post("/confirm", (req, res)=>{
 app.post("/delete", (req, res)=>{
 
 })
+
+
+
+app.post("/sendMode", async (req, res)=>{
+    console.log("...........send mode.............")
+    console.log(req.body)
+    console.log(typeof req.body.toDelete)
+    mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
+        let dbb = client.db()
+
+        req.body.toDelete.forEach(async e=>{
+            if(await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(e)})){
+                console.log("found in uncon unfinished")
+                console.log(await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(e)}))
+                let result = await dbb.collection("uncon-unfinished").findOneAndDelete({_id: ObjectID(e)})
+            }else if (await dbb.collection("uncon-finished").findOne({_id: ObjectID(e)})){
+                console.log("found in uncon finished ")
+                let result = await dbb.collection("uncon-finished").findOneAndDelete({_id: ObjectID(e)})
+            }
+        })
+
+        req.body.toConfirm.forEach(async e =>{
+            if(await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(e)})){
+                console.log("found in uncon-unfinished")
+                let toCon = await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(e)})
+                await dbb.collection("con-unfinished").insertOne(toCon)
+                await dbb.collection("uncon-unfinished").findOneAndDelete({_id: ObjectID(e)})
+            }else if(await dbb.collection("uncon-finished").findOne({_id: ObjectID(e)})){
+                console.log("found in uncon-finished")
+                let toCon = await dbb.collection("uncon-finished").findOne({_id: ObjectID(e)})
+                await dbb.collection("con-finished").insertOne(toCon)
+                await dbb.collection("uncon-finished").findOneAndDelete({_id: ObjectID(e)})
+
+            }
+        })
+
+    })    
+
+})
+
+
 
 
 app.post("/definishing", (req, res)=>{
