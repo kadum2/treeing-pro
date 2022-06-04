@@ -21,7 +21,7 @@
             /* height: 30vh; */
             height: 25vh;
             width: 84%;
-            background: red;
+            background: rgb(123, 255, 163);
             z-index: 1004;
             display: flex;
             justify-content: center;
@@ -32,7 +32,8 @@
         #before, #after{
             display: flex;
             gap: 1rem;
-            background: #29D659;
+            /* background: #29D659; */
+            background: rgb(150, 255, 181);
             height: 90%;
             width: 90%;
             flex-direction: row;
@@ -44,7 +45,9 @@
         }
         #map{
             height: 90vh;
-            width: 90vw;  
+            width: 90vw; 
+            border: 2px solid black;
+            border-radius: .3rem;
         }
 
         .one{
@@ -276,5 +279,10 @@ footer a{
     background-position: center;
     background-size: auto;
 }
+
+
+
+
+
 
 
