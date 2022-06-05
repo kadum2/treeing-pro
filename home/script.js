@@ -228,6 +228,12 @@ document.querySelectorAll(".send").forEach(ee=>{
     
             /////names 
             fd.append("names", aChildren.find(e=>e.getAttribute("class") == "names").value)
+
+            /////more details; 
+            if(aChildren.find(e=>e.getAttribute("class") == "moreDetails")){
+                fd.append("moreDetails", aChildren.find(e=>e.getAttribute("class") == "moreDetails").value)
+                fd.append("dateOfPlanting", aChildren.find(e=>e.getAttribute("class") == "dateOfPlanting").value)
+            }
     
             console.log(fd)
     

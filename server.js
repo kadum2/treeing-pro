@@ -4,23 +4,16 @@
 let express = require("express")
 let app = express()
 let cors = require("cors") /////to remove later
-// const path = require("path")
-// const fs = require("fs")
 const multer  = require("multer") 
 let bodyParser = require('body-parser')
 let cookieParser = require("cookie-parser")
-
+let mongodb = require("mongodb").MongoClient  ///mongodb atlas
+let { ObjectID } = require("bson") 
 
 app.use(cookieParser())
 app.use(cors())    /////to remove 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
-
-
-
-////////mongodb; mongo atlas
-let mongodb = require("mongodb").MongoClient  ///mongodb atlas
-const { ObjectID } = require("bson") 
 require("dotenv").config()
 
 
@@ -101,8 +94,7 @@ app.get("/map-api-key", (req, res)=>{
 
 
 ///////plan; 
-//////home 
-///get confirmed; finished, unfinished 
+///geting  
 app.get("/con-finished", async (req, res)=>{
     console.log("............get con-finished.........")
     mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
@@ -111,6 +103,7 @@ app.get("/con-finished", async (req, res)=>{
     res.send(result)
     })
 })
+
 app.get("/con-unfinished", async (req, res)=>{
     console.log("............get con-unfinished..........")
     mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
@@ -120,7 +113,6 @@ app.get("/con-unfinished", async (req, res)=>{
     })
 })
 
-///get
 app.get("/uncon-finished",(req, res)=>{
     ///check if valid token 
     if(req.cookies.modeAuth == process.env.MODEAUTH){
@@ -147,8 +139,60 @@ app.get("/uncon-unfinished",(req, res)=>{
 })
 
 
+/////post; home (uncon)
 
-////unfinished; mode 
+app.post("/uncon-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
+    
+    console.log(req.body)
+    console.log(beforeImgs)
+    console.log(afterImgs)
+
+    ////if mode save it in con; else in uncon 
+        if(typeof beforeImgs[0] == "string" &&typeof afterImgs[0] == "string" ){
+            console.log("valid data")
+            mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
+                let dbb = client.db()
+                await dbb.collection("uncon-finished").insertOne({
+                    coords: req.body.coords.split(","),
+                    bName: [], 
+                    beforeImgs: beforeImgs,
+                    afterImgs: afterImgs, 
+                    aNames: req.body.names.split(","),
+                    moreDetails: req.body.moreDetails,
+                    dateOfPlanting: req.body.dateOfPlanting,
+                })
+                })
+            res.sendStatus(200)
+        }else{
+            res.sendStatus(400)
+        }
+})
+
+app.post("/uncon-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()}, multerBasic.any(), (req, res)=>{
+    console.log(req.body)
+
+    ////if mode save it in con; else in uncon 
+        if(typeof beforeImgs[0] == "string"){
+            console.log("valid data")
+            mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
+                let dbb = client.db()
+                await dbb.collection("uncon-unfinished").insertOne({
+                    coords: req.body.coords.split(","),
+                    bName: req.body.names, 
+                    beforeImgs: beforeImgs,
+                    afterImgs: afterImgs, 
+                    aNames: []
+                })
+                })
+            res.sendStatus(200)
+        }else{
+            res.sendStatus(400)
+        }
+})
+
+
+/////post; mode (con)
+
 app.post("/con-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()}, multerBasic.array("bImgs"), (req, res)=>{
     console.log(req.body)
 
@@ -175,31 +219,6 @@ app.post("/con-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = []; n
     }
 })
 
-/////unfinished; home 
-app.post("/uncon-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()}, multerBasic.any(), (req, res)=>{
-    console.log(req.body)
-
-    ////if mode save it in con; else in uncon 
-        if(typeof beforeImgs[0] == "string"){
-            console.log("valid data")
-            mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
-                let dbb = client.db()
-                await dbb.collection("uncon-unfinished").insertOne({
-                    coords: req.body.coords.split(","),
-                    bName: req.body.names, 
-                    beforeImgs: beforeImgs,
-                    afterImgs: afterImgs, 
-                    aNames: []
-                })
-                })
-            res.sendStatus(200)
-        }else{
-            res.sendStatus(400)
-        }
-})
-
-
-/////finished; mode 
 app.post("/con-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
     console.log(req.body)
     console.log(beforeImgs)
@@ -216,6 +235,8 @@ app.post("/con-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; nex
                     bName: [], 
                     beforeImgs: beforeImgs,
                     afterImgs: afterImgs, 
+                    moreDetails: req.body.moreDetails,
+                    dateOfPlanting: req.body.dateOfPlanting,
                     aNames: req.body.names.split(",")
                 })
                 })
@@ -228,75 +249,12 @@ app.post("/con-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; nex
     }
 })
 
-/////finished; home
-app.post("/uncon-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
-    console.log(req.body)
-    console.log(beforeImgs)
-    console.log(afterImgs)
-
-    ////if mode save it in con; else in uncon 
-        if(typeof beforeImgs[0] == "string" &&typeof afterImgs[0] == "string" ){
-            console.log("valid data")
-            mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
-                let dbb = client.db()
-                await dbb.collection("uncon-finished").insertOne({
-                    coords: req.body.coords.split(","),
-                    bName: [], 
-                    beforeImgs: beforeImgs,
-                    afterImgs: afterImgs, 
-                    aNames: req.body.names.split(",")
-                })
-                })
-            res.sendStatus(200)
-        }else{
-            res.sendStatus(400)
-        }
-})
-
-
-////finish the loc
-    /// get the old loc from con-un; add imgs to afterImgs; add the new one to
-    /// con-fi; remove the old one from con-un
-    app.post("/finishing", (req, res)=>{
-
-    })
 
 
 
+///mode; confirm and delete; 
 
-///mode; for each route check if it is the moderator by checking valid token 
-
-
-///confirm
-app.post("/confirm", (req, res)=>{
-    console.log("......confirm.....")
-    mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
-    let dbb = client.db()
-    ////check req.body.type, req.body.id or if(){}; find by id
-    if(await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(req.body.id)})){
-        /////add to con side
-
-        /////remove from uncon side 
-        
-    }else if(await dbb.collection("uncon-finished").findOne({})){
-
-    }else{
-
-    }
-    
-    })
-})
-
-
-////delete the loc; get the id 
-    ////remove by id 
-app.post("/delete", (req, res)=>{
-
-})
-
-
-
-app.post("/sendMode", async (req, res)=>{
+app.post("/send-mode", async (req, res)=>{
     console.log("...........send mode.............")
     console.log(req.body)
     console.log(typeof req.body.toDelete)
@@ -304,14 +262,19 @@ app.post("/sendMode", async (req, res)=>{
         let dbb = client.db()
 
         req.body.toDelete.forEach(async e=>{
+            let todel 
+
             if(await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(e)})){
-                console.log("found in uncon unfinished")
-                console.log(await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(e)}))
-                let result = await dbb.collection("uncon-unfinished").findOneAndDelete({_id: ObjectID(e)})
-            }else if (await dbb.collection("uncon-finished").findOne({_id: ObjectID(e)})){
-                console.log("found in uncon finished ")
-                let result = await dbb.collection("uncon-finished").findOneAndDelete({_id: ObjectID(e)})
+                todel = "uncon-unfinished"
+            }else if(await dbb.collection("uncon-finished").findOne({_id: ObjectID(e)})){
+                todel = "uncon-finished"
+            }else if(await dbb.collection("con-unfinished").findOne({_id: ObjectID(e)})){
+                todel = "con-unfinished"
+            }else if(await dbb.collection("con-finished").findOne({_id: ObjectID(e)})){
+                todel = "con-finished"
             }
+            let result = await dbb.collection(todel).findOneAndDelete({_id: ObjectID(e)})
+
         })
 
         req.body.toConfirm.forEach(async e =>{
@@ -334,11 +297,26 @@ app.post("/sendMode", async (req, res)=>{
 })
 
 
+////finish the loc
+    /// get the old loc from con-un; add imgs to afterImgs; add the new one to
+    /// con-fi; remove the old one from con-un
+
+
+app.post("/finishing", (req, res)=>{
+
+})
 
 
 app.post("/definishing", (req, res)=>{
 
 })
+
+app.post("/make-finished")
+
+
+
+
+
 
 
 ///////////test code

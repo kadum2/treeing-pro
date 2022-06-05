@@ -185,8 +185,27 @@ function insertLocs (dataList,needconf ,pin){
                             document.querySelector("#buttons").innerHTML = ""
 
                         })
-
                         document.querySelector("#buttons").append(conf, del)
+
+                    }else{
+
+                        console.log("confirmed pin")
+
+                        let del = document.createElement("button")
+                        del.textContent = "delete"
+                        del.addEventListener("click", (e)=>{
+                            document.querySelector("#beforeImgs").innerHTML = ""
+                            document.querySelector("#bContributers").innerHTML = "" 
+                            document.querySelector("#afterImgs").innerHTML = ""
+                            document.querySelector("#aContributers").innerHTML = "" 
+                            toDelete.push(currentId)
+
+                            map.removeLayer(currentM)
+                            document.querySelector("#buttons").innerHTML = ""
+
+                        })
+                        document.querySelector("#buttons").append(del)
+
                     }
 
                 }
@@ -372,6 +391,12 @@ ee.onclick= async (e)=>{
         /////names 
         fd.append("names", aChildren.find(e=>e.getAttribute("class") == "names").value)
 
+        /////more details; 
+        if(aChildren.find(e=>e.getAttribute("class") == "moreDetails")){
+            fd.append("moreDetails", aChildren.find(e=>e.getAttribute("class") == "moreDetails").value)
+            fd.append("dateOfPlanting", aChildren.find(e=>e.getAttribute("class") == "dateOfPlanting").value)
+        }
+        
         console.log(fd)
 
 
@@ -407,8 +432,8 @@ ee.onclick= async (e)=>{
 }
 })
 
-document.querySelector("#sendMode").addEventListener("click", async (e)=>{
-    let sent = await fetch("/sendMode", {
+document.querySelector("#send-mode").addEventListener("click", async (e)=>{
+    let sent = await fetch("/send-mode", {
         method: "POST", 
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify({toConfirm, toDelete})
