@@ -11,6 +11,7 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
             shadowAnchor: [4, 62], // the same for the shadow
             iconSize: [25, 41],
             iconAnchor: [12, 41],
+
         });
 
         ////getting icon; icon is special object not just an image
@@ -20,6 +21,7 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
             shadowAnchor: [4, 62], // the same for the shadow
             iconSize: [25, 41],
             iconAnchor: [12, 41],
+            popupAnchor: [0, -30] 
         });
         let conUnfinished = L.icon({
             iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-red.png?raw=true",
@@ -27,6 +29,7 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
             shadowAnchor: [4, 62], // the same for the shadow
             iconSize: [25, 41],
             iconAnchor: [12, 41],
+            popupAnchor: [0, -30] 
         });
 
 
@@ -66,12 +69,14 @@ L.Control.geocoder().addTo(map);
 
     let confi= await fetch("/con-finished")
     let pconfi= await confi.json()
+    console.log(pconfi)
     insertLocs(pconfi, false, conFinished)
 
     /////get con-unfinished; use red pin, current imgs
 
     let conun= await fetch("/con-unfinished")
     let pconun = await conun.json()
+    console.log(pconun)
     insertLocs(pconun, false, conUnfinished)
 
 
@@ -90,6 +95,7 @@ L.Control.geocoder().addTo(map);
 
     let unfi= await fetch("/uncon-finished")
     let punfi= await unfi.json()
+    console.log(punfi)
     insertLocs(punfi,true)
 }
 
@@ -113,21 +119,31 @@ function insertLocs (dataList,needconf ,pin){
     ////insert id in linked list 
 
     dataList.forEach(e=>{
+
+        let pBName = `<p>${e.bName}</p>`
+        // console.log(dataList.aNames)
+        let pANames= e.aNames.map(ee=>{return "<p>"+ee +"</p>"})
+        console.log(pANames)
+        pANames =  pANames.join("").replace(/,/g, '')
+    
+
         let m 
         if(pin){
             m = L.marker(e.coords, {
-                icon: pin
-            }).addTo(map);
+                icon: pin, 
+                popupAnchor: [-10, -30] 
+            }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}`).addTo(map)
+            // m;
         
         }else{
-            m = L.marker(e.coords).addTo(map);
+            m = L.marker(e.coords).addTo(map).bindPopup(`<h3>?❤المساهمين</h3>${pBName}<br>${pANames}`);
         }
         m.addEventListener("click", (e)=>{
 
             document.querySelector("#beforeImgs").innerHTML = ""
-            document.querySelector("#bContributers").innerHTML = "" 
+            // document.querySelector("#bContributers").innerHTML = "" 
             document.querySelector("#afterImgs").innerHTML = ""
-            document.querySelector("#aContributers").innerHTML = "" 
+            // document.querySelector("#aContributers").innerHTML = "" 
 
             linkedList.forEach(ee=>{
                 if(ee.m == e.target){

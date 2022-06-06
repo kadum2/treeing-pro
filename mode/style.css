@@ -72,6 +72,11 @@
             display: none;
             
         }
+        p{
+            line-height: 0;
+        }
+
+
 
         .form{
             /* position: absolute; */

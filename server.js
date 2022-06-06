@@ -142,7 +142,7 @@ app.get("/uncon-unfinished",(req, res)=>{
 /////post; home (uncon)
 
 app.post("/uncon-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
-    
+
     console.log(req.body)
     console.log(beforeImgs)
     console.log(afterImgs)
@@ -302,7 +302,18 @@ app.post("/send-mode", async (req, res)=>{
     /// con-fi; remove the old one from con-un
 
 
-app.post("/finishing", (req, res)=>{
+app.post("/finishing", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
+
+
+mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
+    let dbb = client.db()
+    if(await dbb.collection("con-unfinished").findOne({_id: ObjectID(req.body.id)})){
+        let result = await dbb.collection("con-unfinished").findOne({_id: ObjectID(req.body.id)})
+        
+
+    }
+})
+
 
 })
 

@@ -19,6 +19,8 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
             shadowAnchor: [4, 62], // the same for the shadow
             iconSize: [25, 41],
             iconAnchor: [12, 41],
+            popupAnchor: [0, -30] 
+
         });
         let conUnfinished = L.icon({
             iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-red.png?raw=true",
@@ -26,6 +28,8 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
             shadowAnchor: [4, 62], // the same for the shadow
             iconSize: [25, 41],
             iconAnchor: [12, 41],
+            popupAnchor: [0, -30] 
+
         });
 
 
@@ -41,6 +45,9 @@ let m
 
 /////getting data; fetch confirmed; finished, unifinished 
 ////display data; red and green labels and imgs; based on the ????
+
+map.scrollWheelZoom.disable();
+
 
 window.onload = async ()=>{
 
@@ -92,17 +99,22 @@ function insertLocs (dataList, pin){
     ////insert id in linked list 
 
     dataList.forEach(e=>{
+
+        let pBName = `<p>${e.bName}</p>`
+        let pANames= e.aNames.map(ee=>{return "<p>"+ee +"</p>"})
+        pANames =  pANames.join("").replace(/,/g, '')
+    
+
         let m = L.marker(e.coords, {
             icon: pin
-        }).addTo(map);
+        }).addTo(map).bindPopup(`<h3> ❤المساهمين </h3>${pBName}<br>${pANames}`);
 
         m.addEventListener("click", (e)=>{
 
             document.querySelector("#beforeImgs").innerHTML = ""
-            document.querySelector("#bContributers").innerHTML = "" 
+            // document.querySelector("#bContributers").innerHTML = "" 
             document.querySelector("#afterImgs").innerHTML = ""
-            document.querySelector("#aContributers").innerHTML = "" 
-
+            // document.querySelector("#aContributers").innerHTML = "" 
 
             linkedList.forEach(ee=>{
                 if(ee.m == e.target){
@@ -113,20 +125,23 @@ function insertLocs (dataList, pin){
                     }
 
                     //////before contributers
-                    document.querySelector("#bContributers").innerHTML = `
-                    <div class="contri">
-                        <h4 class="contributerName">${ee.bName}</h4>
-                    </div>`
+                    // document.querySelector("#bContributers").innerHTML = `
+                    // <div class="contri">
+                    //     <h4 class="contributerName">${ee.bName}</h4>
+                    // </div>`
 
                     /////after;
-                    for(let i = 0; i<3; i++){
-                        document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
+                    if(ee.afterImgsElements[0]){
+                        for(let i = 0; i<3; i++){
+                            document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
+                        }
+    
                     }
 
-                    document.querySelector("#aContributers").innerHTML = `
-                    <div class="contri">
-                        <h4 class="contributerName">${ee.aNames}</h4>
-                    </div>`
+                    // document.querySelector("#aContributers").innerHTML = `
+                    // <div class="contri">
+                    //     <h4 class="contributerName">${ee.aNames}</h4>
+                    // </div>`
 
                 }
             })
@@ -256,10 +271,8 @@ document.querySelectorAll(".send").forEach(ee=>{
                     body: fd
                 })
             }
-    
-    
-    
-    
+
+            
             ////empty 
         ////empty 
         aChildren.find(e=>e.getAttribute("class") == "names").value = ""
