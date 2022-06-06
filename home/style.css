@@ -30,7 +30,7 @@
             border-radius: .2rem;
 
         }
-        #before, #after{
+        #beforeImgs, #afterImgs{
             display: flex;
             gap: 1rem;
             /* background: #29D659; */
@@ -242,8 +242,6 @@ footer a{
         max-width: 30%; */
         max-width: 10rem;
         max-height: 10rem;
-    
-
     }
     #beforeImgs img, #afterImgs img, .smType {
         background-image: url("../../Telegram-Logo.png");
