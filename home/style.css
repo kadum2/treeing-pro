@@ -232,7 +232,7 @@ footer a{
     #beforeImgs, #afterImgs{
         max-width: 90vw;
         height: 100%;
-        overflow: hidden;
+        overflow-x: hidden;
         /* background: red; */
     }
     #beforeImgs img, #afterImgs img{
