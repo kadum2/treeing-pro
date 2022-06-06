@@ -233,7 +233,7 @@ footer a{
         max-width: 90vw;
         height: 100%;
         /* overflow-x: hidden; */
-        /* overflow-x: scroll; */
+        overflow-x: scroll;
 
         /* background: red; */
     }
