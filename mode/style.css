@@ -308,8 +308,20 @@ footer a{
 }
 
 
-
-
+#buttons{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    /* background: red;
+    height: 4rem;
+    width: 4rem; */
+    top: 3rem;
+    right: 1.4rem;
+    z-index: 1013;
+}
+.red:hover{
+    background: rgb(148, 35, 35);
+}
 /* add coords background img */
 .addCoords, #addUnconFinishedCoords, #addUnconUnfinishedCoords {
     background-image: url("https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png");

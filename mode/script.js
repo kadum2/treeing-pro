@@ -32,6 +32,14 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
             popupAnchor: [0, -30] 
         });
 
+        let finishingPin = L.icon({
+            iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-orange.png?raw=true",
+            shadowSize: [50, 64], // size of the shadow
+            shadowAnchor: [4, 62], // the same for the shadow
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [0, -30] 
+        });
 
 
 
@@ -70,33 +78,42 @@ L.Control.geocoder().addTo(map);
     let confi= await fetch("/con-finished")
     let pconfi= await confi.json()
     console.log(pconfi)
-    insertLocs(pconfi, false, conFinished)
+    insertLocs(pconfi, "basicDel", conFinished, true)
 
     /////get con-unfinished; use red pin, current imgs
 
     let conun= await fetch("/con-unfinished")
     let pconun = await conun.json()
     console.log(pconun)
-    insertLocs(pconun, false, conUnfinished)
+    insertLocs(pconun, "basicDel", conUnfinished, false)
 
 
     /////get con-unfinished; use red pin, current imgs
 
 
     //////uncon to insert buttons to add to list and that list of id to be confirmed
-    /////get uncon-unfinished 
+    /////get uncon-unfinished (blue)
 
     let unun= await fetch("/uncon-unfinished")
     let punun = await unun.json()
     console.log(punun)
-    insertLocs(punun, true)
+    insertLocs(punun, "confirm", uncon, false)
 
-    /////get uncon-finished 
+    /////get uncon-finished (blue)
 
     let unfi= await fetch("/uncon-finished")
     let punfi= await unfi.json()
     console.log(punfi)
-    insertLocs(punfi,true)
+    insertLocs(punfi,"confirm", uncon, true)
+
+    /////get made finished; finishing (orange)
+
+    let finishing= await fetch("/make-finished")
+    let pfinishing= await finishing.json()
+    console.log(pfinishing)
+    insertLocs(pfinishing,"conFinish", finishingPin, true)
+
+
 }
 
 
@@ -112,7 +129,7 @@ let toConfirm = []
 let toDelete = []
 
 
-function insertLocs (dataList,needconf ,pin){
+function insertLocs (dataList,confType ,pin, thirdOption){
 
     ////make marker, insert in map, insert in linkedlist; make the label functionality 
     ////make imgs, insert in containers (profile), insert in linkedlist
@@ -150,36 +167,30 @@ function insertLocs (dataList,needconf ,pin){
                     currentId = ee.id
                     currentM = ee.m
 
+                    ////third option
+                    console.log(ee.thirdOption) 
+                    ee.thirdOption?document.querySelector("#sendFinishing").setAttribute("disabled", true):document.querySelector("#sendFinishing").removeAttribute("disabled")
+
+
                     ////beforeImgs inserting; three imgs
                     for(let i = 0; i<3; i++){
                         document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
                     }
-
-                    //////before contributers
-                    document.querySelector("#bContributers").innerHTML = `
-                    <div class="contri">
-                        <h4 class="contributerName">${ee.bName}</h4>
-                    </div>`
-
                     /////after;
-                    for(let i = 0; i<3; i++){
-                        document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
+                    if(ee.afterImgsElements[0]){
+                        for(let i = 0; i<3; i++){
+                            document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
+                        }
+    
                     }
 
-                    document.querySelector("#aContributers").innerHTML = `
-                    <div class="contri">
-                        <h4 class="contributerName">${ee.aNames}</h4>
-                    </div>`
-
                     document.querySelector("#buttons").innerHTML = ""
-                    if(needconf){
+                    if(confType == "confirm" || confType == "conFinish"){
                         let conf = document.createElement("button")
-                        conf.textContent = "confirm"
+                        confType == "confirm"?conf.textContent = "confirm":conf.textContent = "finished"
                         conf.addEventListener("click", (e)=>{
                             document.querySelector("#beforeImgs").innerHTML = ""
-                            document.querySelector("#bContributers").innerHTML = "" 
                             document.querySelector("#afterImgs").innerHTML = ""
-                            document.querySelector("#aContributers").innerHTML = "" 
 
                             toConfirm.push(currentId)
 
@@ -189,12 +200,13 @@ function insertLocs (dataList,needconf ,pin){
                         })
 
                         let del = document.createElement("button")
-                        del.textContent = "delete"
+                        del.classList.add("red")
+                        confType == "confirm"?del.textContent = "delete":del.textContent = "not finished"
+
+                        // del.textContent = "delete"
                         del.addEventListener("click", (e)=>{
                             document.querySelector("#beforeImgs").innerHTML = ""
-                            document.querySelector("#bContributers").innerHTML = "" 
                             document.querySelector("#afterImgs").innerHTML = ""
-                            document.querySelector("#aContributers").innerHTML = "" 
                             toDelete.push(currentId)
 
                             map.removeLayer(currentM)
@@ -203,7 +215,7 @@ function insertLocs (dataList,needconf ,pin){
                         })
                         document.querySelector("#buttons").append(conf, del)
 
-                    }else{
+                    }else if (confType == "basicDel"){
 
                         console.log("confirmed pin")
 
@@ -211,9 +223,7 @@ function insertLocs (dataList,needconf ,pin){
                         del.textContent = "delete"
                         del.addEventListener("click", (e)=>{
                             document.querySelector("#beforeImgs").innerHTML = ""
-                            document.querySelector("#bContributers").innerHTML = "" 
                             document.querySelector("#afterImgs").innerHTML = ""
-                            document.querySelector("#aContributers").innerHTML = "" 
                             toDelete.push(currentId)
 
                             map.removeLayer(currentM)
@@ -223,7 +233,6 @@ function insertLocs (dataList,needconf ,pin){
                         document.querySelector("#buttons").append(del)
 
                     }
-
                 }
             })
         })
@@ -251,7 +260,7 @@ function insertLocs (dataList,needconf ,pin){
             }
         }
 
-        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames})
+        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames, thirdOption})
     })
 
 }
@@ -412,7 +421,7 @@ ee.onclick= async (e)=>{
             fd.append("moreDetails", aChildren.find(e=>e.getAttribute("class") == "moreDetails").value)
             fd.append("dateOfPlanting", aChildren.find(e=>e.getAttribute("class") == "dateOfPlanting").value)
         }
-        
+
         console.log(fd)
 
 
@@ -428,11 +437,13 @@ ee.onclick= async (e)=>{
                 body: fd
             })
         }else if (e.target.getAttribute("id")=="sendFinishing"){
-            await fetch("/con-finishing", {
+            await fetch("/make-finishing", {
                 method: "POST", 
                 body: fd
             })
         }
+
+
 
         ////empty 
         aChildren.find(e=>e.getAttribute("class") == "names").value = ""
@@ -442,6 +453,12 @@ ee.onclick= async (e)=>{
 
         map.removeLayer(m)
         currentCoords = ""
+        currentId = ""
+        if(aChildren.find(e=>e.getAttribute("class") == "moreDetails")){
+            aChildren.find(e=>e.getAttribute("class") == "moreDetails"). value = ""
+            aChildren.find(e=>e.getAttribute("class") == "dateOfPlanting").value = ""
+        }
+
     }else{
         message.innerHTML = "fill the rest input"
     }

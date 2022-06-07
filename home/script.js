@@ -69,7 +69,7 @@ L.Control.geocoder().addTo(map);
     let confi= await fetch("/con-finished")
     let pconfi= await confi.json()
     console.log(pconfi)
-    pconfi[0]?insertLocs(pconfi, conFinished ):null
+    pconfi[0]?insertLocs(pconfi, conFinished, true):null
     // Object.entries(pconfi).length != 0?insertLocs(pconfi):null
     // if(pconfi){insertLocs(pconfi)}
 
@@ -78,7 +78,7 @@ L.Control.geocoder().addTo(map);
     let conun= await fetch("/con-unfinished")
     let pconun = await conun.json()
     console.log(pconun)
-    pconun[0]?insertLocs(pconun, conUnfinished ):null
+    pconun[0]?insertLocs(pconun, conUnfinished, false ):null
     // Object.entries(pconfi).length != 0?insertLocs(pconfi):null
 
 
@@ -92,7 +92,7 @@ let linkedList = []
 let beforeImgsElements = []
 let afterImgsElements = []
 
-function insertLocs (dataList, pin){
+function insertLocs (dataList, pin, thirdOption){
 
     ////make marker, insert in map, insert in linkedlist; make the label functionality 
     ////make imgs, insert in containers (profile), insert in linkedlist
@@ -115,11 +115,19 @@ function insertLocs (dataList, pin){
             // document.querySelector("#bContributers").innerHTML = "" 
             document.querySelector("#afterImgs").innerHTML = ""
             // document.querySelector("#aContributers").innerHTML = "" 
+            // document.querySelector("#sendFinishing").setAttribute("disabled", true)
 
             linkedList.forEach(ee=>{
                 if(ee.m == e.target){
-                    
+
+                    //////third option 
+                    ee.thirdOption?document.querySelector("#sendFinishing").setAttribute("disabled", true):document.querySelector("#sendFinishing").removeAttribute("disabled")
+
+
                     ////beforeImgs inserting; three imgs
+                    console.log(ee)
+                    currentM = ee.m
+                    currentId = ee.id
                     for(let i = 0; i<3; i++){
                         document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
                     }
@@ -171,7 +179,7 @@ function insertLocs (dataList, pin){
             }
         }
 
-        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e.id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames})
+        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames, thirdOption})
     })
 
 }
@@ -215,6 +223,7 @@ document.querySelectorAll(".send").forEach(ee=>{
     
         let aChildren = [...children]
         aChildren.forEach(e=>console.log(e))
+        console.log(currentId)
     
     
     
@@ -225,7 +234,7 @@ document.querySelectorAll(".send").forEach(ee=>{
             let fd = new FormData()
     
             /////coords 
-            e.target.getAttribute("id") == "sendUnfinished" || e.target.getAttribute("id") == "sendFinished"?fd.append("coords", currentCoords):fd.append("coords", currentId)
+            e.target.getAttribute("id") == "sendUnfinished" || e.target.getAttribute("id") == "sendFinished"?fd.append("coords", currentCoords):fd.append("id", currentId)
     
             /////imgs 
             if(aChildren.find(e=>e.getAttribute("class") == "addBImgs")){
@@ -266,7 +275,7 @@ document.querySelectorAll(".send").forEach(ee=>{
                     body: fd
                 })
             }else if (e.target.getAttribute("id")=="sendFinishing"){
-                await fetch("/uncon-finishing", {
+                await fetch("/make-finishing", {
                     method: "POST", 
                     body: fd
                 })
@@ -280,8 +289,17 @@ document.querySelectorAll(".send").forEach(ee=>{
         if(aChildren.find(e=>e.getAttribute("class") == "addBImgs")){aChildren.find(e=>e.getAttribute("class") == "addBImgs").files = null}
         
 
-        map.removeLayer(m)
+        m?map.removeLayer(m):null
         currentCoords = ""
+        currentId = ""
+
+        if(aChildren.find(e=>e.getAttribute("class") == "moreDetails")){
+            aChildren.find(e=>e.getAttribute("class") == "moreDetails"). value = ""
+            aChildren.find(e=>e.getAttribute("class") == "dateOfPlanting").value = ""
+        }
+
+
+
         }else{
             message.innerHTML = "fill the rest input"
         }

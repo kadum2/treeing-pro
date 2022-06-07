@@ -138,6 +138,18 @@ app.get("/uncon-unfinished",(req, res)=>{
         }
 })
 
+app.get("/make-finished", (req, res)=>{
+    if(req.cookies.modeAuth == process.env.MODEAUTH){
+        mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
+            let dbb = client.db()
+            let result = await dbb.collection("finishing").find().toArray()
+            res.send(result)
+        })
+    }else{
+        res.sendStatus(401)
+    }
+})
+
 
 /////post; home (uncon)
 
@@ -252,16 +264,36 @@ app.post("/con-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; nex
 
 
 
-///mode; confirm and delete; 
+///mode; confirm and delete; finish and definish 
 
 app.post("/send-mode", async (req, res)=>{
     console.log("...........send mode.............")
     console.log(req.body)
     console.log(typeof req.body.toDelete)
+    if(req.cookies.modeAuth == process.env.MODEAUTH){
+    
+    
+    
     mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
         let dbb = client.db()
 
         req.body.toDelete.forEach(async e=>{
+            if(await dbb.collection("finishing").findOne({_id: ObjectID(e)})){
+                let deFinish = await dbb.collection("finishing").findOne({_id: ObjectID(e)})
+
+                await dbb.collection("con-unfinished").insertOne({
+                    coords: deFinish.coords,
+                    bName: deFinish.bName, 
+                    beforeImgs: deFinish.beforeImgs,
+                    afterImgs: [], 
+                    moreDetails: "",
+                    dateOfPlanting: "",
+                    aNames: []
+                })
+                await dbb.collection("finishing").findOneAndDelete({_id: ObjectID(e)})
+                res.sendStatus(200)
+
+            }
             let todel 
 
             if(await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(e)})){
@@ -275,7 +307,9 @@ app.post("/send-mode", async (req, res)=>{
             }
             let result = await dbb.collection(todel).findOneAndDelete({_id: ObjectID(e)})
 
+            
         })
+
 
         req.body.toConfirm.forEach(async e =>{
             if(await dbb.collection("uncon-unfinished").findOne({_id: ObjectID(e)})){
@@ -288,43 +322,62 @@ app.post("/send-mode", async (req, res)=>{
                 let toCon = await dbb.collection("uncon-finished").findOne({_id: ObjectID(e)})
                 await dbb.collection("con-finished").insertOne(toCon)
                 await dbb.collection("uncon-finished").findOneAndDelete({_id: ObjectID(e)})
+            }else if(await dbb.collection("finishing").findOne({_id: ObjectID(e)})){
+                let deFinish = await dbb.collection("finishing").findOne({_id: ObjectID(e)})
 
+                await dbb.collection("con-finished").insertOne({
+                    coords: deFinish.coords,
+                    bName: deFinish.bName, 
+                    beforeImgs: deFinish.beforeImgs,
+                    afterImgs: deFinish.afterImgs, 
+                    moreDetails: deFinish.moreDetails,
+                    dateOfPlanting: deFinish.dateOfPlanting,
+                    aNames: deFinish.aNames
+                })
+                await dbb.collection("finishing").findOneAndDelete({_id: ObjectID(e)})
             }
         })
 
-    })    
+    })  
+}
+
 
 })
 
 
 ////finish the loc
-    /// get the old loc from con-un; add imgs to afterImgs; add the new one to
-    /// con-fi; remove the old one from con-un
+/////con unfinished uncon finished 
 
+app.post("/make-finishing", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(),(req, res)=>{
+    console.log("...........make finished..........")
+    console.log(req.body)
 
-app.post("/finishing", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
+        ////if mode save it in con; else in uncon 
+            if(typeof afterImgs[0] == "string" ){
+                console.log("valid data")
+                mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
+                    let dbb = client.db()
 
+                    let found = await dbb.collection("con-unfinished").findOne({_id: ObjectID(req.body.id)})
 
-mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
-    let dbb = client.db()
-    if(await dbb.collection("con-unfinished").findOne({_id: ObjectID(req.body.id)})){
-        let result = await dbb.collection("con-unfinished").findOne({_id: ObjectID(req.body.id)})
-        
+                    await dbb.collection("finishing").insertOne({
+                        coords: found.coords,
+                        bName: found.bName, 
+                        beforeImgs: found.beforeImgs,
+                        afterImgs: afterImgs, 
+                        moreDetails: req.body.moreDetails,
+                        dateOfPlanting: req.body.dateOfPlanting,
+                        aNames: req.body.names.split(",")
+                    })
+                    await dbb.collection("con-unfinished").findOneAndDelete({_id: ObjectID(req.body.id)})
 
-    }
+                    })
+
+                res.sendStatus(200)
+            }else{
+                res.sendStatus(402)
+            }
 })
-
-
-})
-
-
-app.post("/definishing", (req, res)=>{
-
-})
-
-app.post("/make-finished")
-
-
 
 
 
