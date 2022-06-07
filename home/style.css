@@ -32,7 +32,7 @@
         }
         #beforeImgs, #afterImgs{
             display: flex;
-            gap: 1rem;
+            gap: .3rem;
             /* background: #29D659; */
             background: rgb(150, 255, 181);
             height: 90%;
