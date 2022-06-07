@@ -322,11 +322,19 @@ footer a{
 .red:hover{
     background: rgb(148, 35, 35);
 }
-/* add coords background img */
-.addCoords, #addUnconFinishedCoords, #addUnconUnfinishedCoords {
-    background-image: url("https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png");
+
+#addUnconUnfinishedCoords{
+    background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-red.png?raw=true");
     background-position: center;
-    background-size: auto;
+    background-size: cover;
+
+}
+
+#addUnconFinishedCoords{
+    background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-green.png?raw=true");
+    background-position: center;
+    background-size: cover;
+
 }
 
 
