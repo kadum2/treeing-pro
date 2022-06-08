@@ -224,6 +224,7 @@ footer a{
         /* transform: translateX(-2rem); */
         top: .5rem;
         width: 100vw;
+        height: 32vh;
     }
     #beforeImgs, #afterImgs{
         max-width: 90vw;
