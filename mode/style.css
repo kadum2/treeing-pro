@@ -50,6 +50,7 @@
             width: 90vw; 
             border: 2px solid black;
             border-radius: .3rem;
+            margin-top: 2rem;
         }
 
         .one{
@@ -228,9 +229,12 @@ footer a{
     #profile{
         transform: translateY(0);
         /* transform: translateX(-2rem); */
-        top: .5rem;
+        top: 0.5rem;
         width: 100vw;
         height: 32vh;
+    }
+    #map{
+        margin-top: 5rem;
     }
     #beforeandafter{
         justify-content: space-between;
@@ -372,6 +376,8 @@ footer a{
     display: flex;
     flex-direction: row;
     /* background: red; */
+    gap: 1.5rem;
+
 }
 
 #moreinfo{

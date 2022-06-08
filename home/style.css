@@ -44,6 +44,8 @@
             width: 90vw; 
             border: 2px solid black;
             border-radius: .3rem;
+            margin-top: 2rem;
+        
         }
 
         .one{
@@ -213,6 +215,13 @@ footer a{
     opacity: 0;
 }
 
+#beforeandafter{
+    justify-content: space-between;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+
 @media all and (max-width: 500px){
 
     .body{
@@ -226,9 +235,12 @@ footer a{
         width: 100vw;
         height: 32vh;
     }
-    #beforeandafter{
-        justify-content: space-between;
+    #map{
+        margin-top: 5rem;
     }
+    /* #beforeandafter{
+        justify-content: space-between;
+    } */
     #beforeImgs, #afterImgs{
         max-width: 90vw;
         height: 100%;
