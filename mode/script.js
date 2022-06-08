@@ -191,6 +191,8 @@ function insertLocs (dataList,confType ,pin, thirdOption){
                             document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
                         }
     
+                    }else{
+                        document.querySelector("#afterImgs").innerHTML = `<h1> قريبا </h1>`
                     }
 
                     document.querySelector("#buttons").innerHTML = ""

@@ -150,13 +150,9 @@ function insertLocs (dataList, pin, thirdOption){
                         for(let i = 0; i<3; i++){
                             document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
                         }
-    
+                    }else{
+                        document.querySelector("#afterImgs").innerHTML = `<h1> قريبا </h1>`
                     }
-
-                    // document.querySelector("#aContributers").innerHTML = `
-                    // <div class="contri">
-                    //     <h4 class="contributerName">${ee.aNames}</h4>
-                    // </div>`
 
                 }
             })
