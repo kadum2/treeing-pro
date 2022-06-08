@@ -126,6 +126,13 @@ function insertLocs (dataList, pin, thirdOption){
 
                     ////beforeImgs inserting; three imgs
                     console.log(ee)
+
+                    ///////more info display; 
+                    document.querySelector("#date").textContent = ""
+                    document.querySelector("#details").textContent = ""
+                    ee.dateOfPlanting?document.querySelector("#date").textContent = ee.dateOfPlanting:null
+                    ee.moreDetails?document.querySelector("#details").textContent = ee.moreDetails:null
+
                     currentM = ee.m
                     currentId = ee.id
                     for(let i = 0; i<3; i++){
@@ -179,7 +186,7 @@ function insertLocs (dataList, pin, thirdOption){
             }
         }
 
-        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames, thirdOption})
+        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames, thirdOption,dateOfPlanting:e.dateOfPlanting, moreDetails: e.moreDetails})
     })
 
 }

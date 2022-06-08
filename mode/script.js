@@ -172,6 +172,15 @@ function insertLocs (dataList,confType ,pin, thirdOption){
                     ee.thirdOption?document.querySelector("#sendFinishing").setAttribute("disabled", true):document.querySelector("#sendFinishing").removeAttribute("disabled")
 
 
+                    ///////more info display; 
+                    document.querySelector("#date").textContent = ""
+                    document.querySelector("#details").textContent = ""
+                    ee.dateOfPlanting?document.querySelector("#date").textContent = ee.dateOfPlanting:null
+                    ee.moreDetails?document.querySelector("#details").textContent = ee.moreDetails:null
+
+
+
+
                     ////beforeImgs inserting; three imgs
                     for(let i = 0; i<3; i++){
                         document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
@@ -260,7 +269,7 @@ function insertLocs (dataList,confType ,pin, thirdOption){
             }
         }
 
-        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames, thirdOption})
+        linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames, thirdOption,dateOfPlanting:e.dateOfPlanting, moreDetails: e.moreDetails})
     })
 
 }
