@@ -330,6 +330,13 @@ footer a{
 
 }
 
+#coaster-route{
+    /* background: #29D659; */
+    background: #33a353;
+    border-radius: .8rem;
+    cursor: pointer;
+    padding: .4rem;
+}
 
 
 
