@@ -226,6 +226,9 @@ footer a{
         width: 100vw;
         height: 32vh;
     }
+    #beforeandafter{
+        justify-content: space-between;
+    }
     #beforeImgs, #afterImgs{
         max-width: 90vw;
         height: 100%;
