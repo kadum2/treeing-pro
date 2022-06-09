@@ -51,6 +51,13 @@
             border: 2px solid black;
             border-radius: .3rem;
             margin-top: 2rem;
+
+            /* margin-top: 5rem; */
+
+            height: 90vh;
+            width: 90vw;  
+
+            /* margin-left: -4rem; */
         }
 
         .one{
@@ -226,15 +233,16 @@ footer a{
         /* display: block; */
         justify-content: center;
     }
+    #map{
+        margin: 5rem 4rem 0 0;
+        /* margin-left: -4rem; */
+    }
     #profile{
         transform: translateY(0);
         /* transform: translateX(-2rem); */
         top: 0.5rem;
         width: 100vw;
         height: 32vh;
-    }
-    #map{
-        margin-top: 5rem;
     }
     #beforeandafter{
         justify-content: space-between;
@@ -266,18 +274,6 @@ footer a{
     }
     
 
-
-    #map{
-        /* height: 50vh;
-        width: 70vw; */
-        height: 90vh;
-        width: 90vw;  
-
-        /* height: 100%; */
-        /* width: 100%; */
-        margin-left: -4rem;
-        /* z-index: 0; */
-    }
     footer{
         flex-direction: column;
 
@@ -389,13 +385,18 @@ footer a{
     font-size: 1.4rem;
 
 }
-#date{
-
+#coaster-route, #gitrepo, #desc{
+    /* background: #29D659; */
+    background: #33a353;
+    border-radius: .8rem;
+    cursor: pointer;
+    padding: .4rem;
 }
-#details{
-
+#gitrepo, #desc{
+    /* background: #33a353; */
+    background: #0f110f;
+    /* background: #19652E; */
 }
-
 
 
 

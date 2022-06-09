@@ -380,6 +380,22 @@ app.post("/make-finishing", (req, res, next)=>{beforeImgs= []; afterImgs = []; n
 
 
 
+////////get the lines from the coaster route project 
+///MONGOKEY2
+
+app.get("/confirmed", (req, res)=>{
+    console.log(".......get confirmed lines.....")
+
+    mongodb.connect(process.env.MONGOKEY2, async (err, client)=>{
+        let dbb = client.db()
+    let results = await dbb.collection("confirmed").find().toArray()
+    res.send(results)
+    console.log(results)
+    })
+})
+
+
+
 
 
 ///////////test code

@@ -42,11 +42,13 @@ let currentId
 let message = document.querySelector("#message")
 let m
 
+let pathObjects = []
+let pathList 
 
 /////getting data; fetch confirmed; finished, unifinished 
 ////display data; red and green labels and imgs; based on the ????
 
-map.scrollWheelZoom.disable();
+// map.scrollWheelZoom.disable();
 
 
 window.onload = async ()=>{
@@ -84,7 +86,75 @@ L.Control.geocoder().addTo(map);
 
     /////get con-unfinished; use red pin, current imgs
 
+
+
+
+    ////get the routes 
+                ///fetching data; 
+                let d = await fetch("/confirmed")
+                pathList = await d.json()
+                console.log(pathList)
 }
+
+function displayLines (pd){
+    console.log("get routes; ", pd)
+    
+    Object.values(pd).forEach(e=>console.log(e.path))
+
+    ///deploy them; store
+    Object.values(pd).forEach(e => {
+
+        let obje 
+
+        if(typeof e.path[0]!="number"){
+
+            console.log(e.path)
+            obje = L.polyline(e.path, {
+                // color: "red",
+            }).addTo(map)
+            // oldObjects.push(pathId) //dont need old objects
+            // pathob.addEventListener("click", (e) => console.log(e.target))
+        } else { ////labels part 
+            console.log("....label....")
+
+            obje = L.circle(e.path, {
+                fillColor: '#3388FF',
+                fillOpacity: 0.8,
+                radius: 100
+            }).addTo(map)
+        }
+
+        pathObjects.push(obje)
+        obje.addEventListener("mouseover", (e)=>{
+            pathObjects.forEach(e=>{e.setStyle({color: "#3388FF", fillColor: "#3388FF"})})
+            e.target.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
+        })
+        obje.addEventListener("click", (e)=>{
+            pathObjects.forEach(e=>{e.setStyle({color: "#3388FF", fillColor: "#3388FF"})})
+            e.target.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
+        })
+    })
+}
+function hideLines(pd){
+    pd.forEach(e=>{
+        map.removeLayer(e)
+    })
+}
+
+
+//////button that shows the lines 
+document.querySelector("#displaylines").addEventListener("click", (e)=>{
+    console.log(e.target.classList)
+
+    e.target.classList.toggle("add")
+    if(e.target.classList.contains("add")){
+        displayLines(pathList)
+    }else{
+        hideLines(pathObjects)
+    }
+})
+
+
 
 
 /////insert data; make function to insert data 
@@ -300,8 +370,6 @@ document.querySelectorAll(".send").forEach(ee=>{
             aChildren.find(e=>e.getAttribute("class") == "moreDetails"). value = ""
             aChildren.find(e=>e.getAttribute("class") == "dateOfPlanting").value = ""
         }
-
-
 
         }else{
             message.innerHTML = "fill the rest input"
