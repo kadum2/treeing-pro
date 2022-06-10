@@ -52,6 +52,7 @@ let currentId
 let message = document.querySelector("#message")
 let m
 let currentM
+let currentMm
 
 let pathObjects = []
 let pathList 
@@ -364,12 +365,12 @@ document.querySelectorAll(".addCoords").forEach(e=>{
     })
 })
 map.addEventListener('click', function (ev) {
-    currentM?map.removeLayer(currentM):null
+    currentMm?map.removeLayer(currentMm):null
 
     if(document.querySelector("#addUnconUnfinishedCoords").classList.contains("red") || document.querySelector("#addUnconFinishedCoords").classList.contains("red")){
         let latlng = map.mouseEventToLatLng(ev.originalEvent);
         let i = [latlng.lat, latlng.lng]
-        currentM = L.marker(i, {
+        currentMm = L.marker(i, {
             icon: currentPin
         }).addTo(map);
         currentCoords = i    

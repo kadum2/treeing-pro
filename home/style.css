@@ -239,6 +239,9 @@ footer a{
         width: 100vw;
         height: 32vh;
     }
+    #map{
+        margin: 6rem 3rem 0 0 ;
+    }
     #beforeImgs, #afterImgs{
         max-width: 90vw;
         height: 100%;
@@ -247,6 +250,7 @@ footer a{
 
         /* background: red; */
     }
+
     #beforeImgs img, #afterImgs img{
         /* max-height: 100%;
         max-width: 30%; */

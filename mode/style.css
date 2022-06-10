@@ -403,6 +403,9 @@ footer a{
     background-position: center;
 }
 
+.btns *{
+    font-size: 1.5rem;
+}
 
 
 

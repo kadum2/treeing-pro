@@ -362,7 +362,23 @@ app.post("/make-finishing", (req, res, next)=>{beforeImgs= []; afterImgs = []; n
             if(typeof afterImgs[0] == "string" ){
                 console.log("valid data")
                 mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
-                    let dbb = client.db()
+                let dbb = client.db()
+
+            if(req.cookies.modeAuth == process.env.MODEAUTH){
+                let found = await dbb.collection("con-unfinished").findOne({_id: ObjectID(req.body.id)})
+
+                await dbb.collection("con-finished").insertOne({
+                    coords: found.coords,
+                    bName: found.bName, 
+                    beforeImgs: found.beforeImgs,
+                    afterImgs: afterImgs, 
+                    moreDetails: req.body.moreDetails,
+                    dateOfPlanting: req.body.dateOfPlanting,
+                    aNames: req.body.names.split(",")
+                })
+                await dbb.collection("con-unfinished").findOneAndDelete({_id: ObjectID(req.body.id)})
+            
+            }else{
 
                     let found = await dbb.collection("con-unfinished").findOne({_id: ObjectID(req.body.id)})
 
@@ -377,6 +393,10 @@ app.post("/make-finishing", (req, res, next)=>{beforeImgs= []; afterImgs = []; n
                     })
                     await dbb.collection("con-unfinished").findOneAndDelete({_id: ObjectID(req.body.id)})
 
+            }
+    
+    
+    
                     })
 
                 res.sendStatus(200)

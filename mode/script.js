@@ -58,8 +58,10 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
 let currentCoords
 let currentId
 let currentM
+let currentMm
 let message = document.querySelector("#message")
 let m
+
 
 let pathObjects = []
 let pathList 
@@ -327,8 +329,6 @@ function insertLocs (dataList,confType ,pin, thirdOption){
 }
 
 
-
-
 // /////insert data; make function to insert data 
 // let linkedList = []
 // let beforeImgsElements = []
@@ -423,12 +423,12 @@ document.querySelectorAll(".addCoords").forEach(e=>{
     })
 })
 map.addEventListener('click', function (ev) {
-    currentM?map.removeLayer(currentM):null
+    currentMm?map.removeLayer(currentMm):null
 
     if(document.querySelector("#addUnconUnfinishedCoords").classList.contains("red") || document.querySelector("#addUnconFinishedCoords").classList.contains("red")){
         let latlng = map.mouseEventToLatLng(ev.originalEvent);
         let i = [latlng.lat, latlng.lng]
-        currentM = L.marker(i, {
+        currentMm = L.marker(i, {
             icon: currentPin
         }).addTo(map);
         currentCoords = i    
@@ -523,7 +523,7 @@ ee.onclick= async (e)=>{
         let fd = new FormData()
 
         /////coords 
-        e.target.getAttribute("id") == "sendUnfinished" || e.target.getAttribute("id") == "sendFinished"?fd.append("coords", currentCoords):fd.append("coords", currentId)
+        e.target.getAttribute("id") == "sendUnfinished" || e.target.getAttribute("id") == "sendFinished"?fd.append("coords", currentCoords):fd.append("id", currentId)
 
         /////imgs 
         if(aChildren.find(e=>e.getAttribute("class") == "addBImgs")){
