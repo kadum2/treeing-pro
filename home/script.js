@@ -53,6 +53,8 @@ let message = document.querySelector("#message")
 let m
 let currentM
 let currentMm
+let currentPin
+
 
 let pathObjects = []
 let pathList 
@@ -84,8 +86,6 @@ L.Control.geocoder().addTo(map);
     let pconfi= await confi.json()
     console.log(pconfi)
     pconfi[0]?insertLocs(pconfi, conFinished, true):null
-    // Object.entries(pconfi).length != 0?insertLocs(pconfi):null
-    // if(pconfi){insertLocs(pconfi)}
 
     /////get con-unfinished; use red pin, current imgs
 
@@ -93,19 +93,15 @@ L.Control.geocoder().addTo(map);
     let pconun = await conun.json()
     console.log(pconun)
     pconun[0]?insertLocs(pconun, conUnfinished, false ):null
-    // Object.entries(pconfi).length != 0?insertLocs(pconfi):null
-
 
     /////get con-unfinished; use red pin, current imgs
 
-
-
-
     ////get the routes 
-                ///fetching data; 
-                let d = await fetch("/confirmed")
-                pathList = await d.json()
-                console.log(pathList)
+        ///fetching data; 
+        let d = await fetch("/confirmed")
+        pathList = await d.json()
+        document.querySelector("#displaylines").removeAttribute("disabled")
+        console.log(pathList)
 }
 
 function displayLines (pd){
@@ -154,6 +150,12 @@ function hideLines(pd){
 }
 
 
+// let suggetstMakeLinesBtn = document.createElement("a")
+// suggetstMakeLinesBtn.textContent = "اضافة مسارات"
+// suggetstMakeLinesBtn.classList.add("suggest")
+// suggetstMakeLinesBtn.setAttribute("href", "https://coaster-route-polyline.herokuapp.com")
+// suggetstMakeLinesBtn.setAttribute("href", "https://coaster-route-polyline.herokuapp.com")
+
 //////button that shows the lines 
 document.querySelector("#displaylines").addEventListener("click", (e)=>{
     console.log(e.target.classList)
@@ -161,8 +163,13 @@ document.querySelector("#displaylines").addEventListener("click", (e)=>{
     e.target.classList.toggle("add")
     if(e.target.classList.contains("add")){
         displayLines(pathList)
+        // e.target.parentElement.append(suggetstMakeLinesBtn)
+        document.querySelector(".suggest").style.display = "block"
     }else{
         hideLines(pathObjects)
+        // e.target.parentElement.lastElementChild.remove()
+        document.querySelector(".suggest").style.display = "none"
+
     }
 })
 
@@ -287,77 +294,8 @@ function insertLocs (dataList, pin, thirdOption){
 
 
 
-/////adding loc
-// document.querySelectorAll(".addCoords").forEach(e=>{
-//     e.onclick = () => {
-//         document.querySelector(".addCoords").classList.toggle("red")
-//     }})
-    
-//     map.addEventListener('click', function (ev) {
-//         m?map.removeLayer(m):null
-//         if (addUnconUnfinishedCoords.classList.contains("red")) {
-//             let latlng = map.mouseEventToLatLng(ev.originalEvent);
-//             let i = [latlng.lat, latlng.lng]
-//             m = L.marker(i, {
-//                 icon: uncon
-//             }).addTo(map);
-    
-//             currentCoords = i
-//         }
-//     });
+/////adding loc; new method;
 
-        let currentPin
-
-
-// document.querySelectorAll(".addCoords").forEach(e=>{
-//     e.onclick = () => {
-//         e.classList.toggle("red")
-//         console.log(e)
-
-//         e.getAttribute("id", "addUnconUnfinishedCoords")?currentPin = conUnfinished:currentPin = conFinished;
-
-//         // currentPin = 
-//         // document.querySelector(".addCoords").classList.toggle("red")
-//     }})
-    
-//     map.addEventListener('click', function (ev) {
-//         currentM?map.removeLayer(currentM):null
-//         let allowCoord
-
-//         // document.querySelectorAll(".addCoords").forEach(e=>{
-//         //     console.log(e)
-//         //     if (e.classList.contains("red")){
-//         //         allowCoord = true
-//         //         e.getAttribute("id", "addUnconUnfinishedCoords")?pin = conUnfinished:pin = conFinished;
-//         //     }else{
-//         //         allowCoord = false
-//         //     }
-//         // })
-
-//         console.log([...document.querySelectorAll(".addCoords")].filter(e=>e.classList.contains("red")))
-//         if([...document.querySelectorAll(".addCoords")].filter(e=>e.classList.contains("red"))){
-//             allowCoord = true
-//             // ev.getAttribute("id", "addUnconUnfinishedCoords")?pin = conUnfinished:pin = conFinished;
-//         }else{
-//             allowCoord = false
-//         }
-
-//         // console.log(document.querySelectorAll(".addCoords").find(e=>e.classList.contains("red")))
-        
-
-//         console.log(allowCoord)
-//         if(allowCoord){
-//             let latlng = map.mouseEventToLatLng(ev.originalEvent);
-//             let i = [latlng.lat, latlng.lng]
-//             currentM = L.marker(i, {
-//                 icon: currentPin
-//             }).addTo(map);
-//             currentCoords = i    
-//         }
-//     });
-
-
-//////new method; 
 document.querySelectorAll(".addCoords").forEach(e=>{
     e.addEventListener("click", (ee)=>{
         ee.target.classList.toggle("red")

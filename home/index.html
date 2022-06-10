@@ -61,7 +61,10 @@
             </div>
         </div>
         <div id="map"></div>
-        <button id="displaylines">اظهار المسارات</button>
+        <div>
+            <button id="displaylines" style="font-size: 1.5rem;" disabled="true">اظهار المسارات</button>
+            <a href="https://coaster-route-polyline.herokuapp.com" target="_blank" class="suggest">اضافة مسارات</a>
+        </div>
 
         <div id="message"></div>
         <div class="form" id="add">
@@ -113,17 +116,23 @@
     </div>
 
     <div class="step f">
-        <span><img id="addUnconUnfinishedCoords" class="exp">اماكن تحتاج الى
-            حملة تشجير</span>
-        <br>
-        <span><img id="addUnconFinishedCoords" class="exp">اماكن تم تشجيرها</span>
-        <br>
-        <span><img class="exp makeNextBtn">مكان الحملة القادمة</span>
-        <br>
+        <div class="pins">
+            <span><img id="addUnconUnfinishedCoords" class="exp">اماكن تحتاج الى
+                حملة تشجير </span>
+            <!-- <br> -->
+            <span><img id="addUnconFinishedCoords" class="exp">اماكن تم تشجيرها
+            </span>
+            <!-- <br> -->
+            <span><img class="exp makeNextBtn">مكان الحملة القادمة </span>
+            <!-- <br> -->
+        </div>
 
-        <span>**بعد اضافة مكان و ارساله مع الصور فان هذا المكان لا يوضع على الخريطة مباشرة, بل يتم ارساله الى ادمن (فريق
+        <div>**بعد اضافة مكان و ارساله مع الصور فان هذا المكان لا يوضع على الخريطة مباشرة, بل يتم ارساله الى ادمن (فريق
             التشجير) ليقوم بتوثيقه و اضافته على الخريطة
-        </span>
+        </div>
+        <div>
+            @ = telegram username
+        </div>
 
     </div>
     <footer>
@@ -132,9 +141,11 @@
         <a href="https://coaster-route-polyline.herokuapp.com" target="_blank" id="coaster-route">لتسهيل الوصول الى
             اماكن الحملات </a>
         <div id="desc">
-            <div>موقع لتسهيل حملات التشجير:</div>
+            <!-- <div>موقع لتسهيل حملات التشجير:</div>
             <div>- تسيهل تحديد الاماكن التي تحتاج الى حملات تشجير</div>
-            <div>- طريقة افضل لتوثيق اماكن و نتيجة الحملات</div>
+            <div>- طريقة افضل لتوثيق اماكن و نتيجة الحملات</div> -->
+            <div>توضيح التقدم في حملات التشجير</div>
+            <div>تمكين الناس من المشاركة: في تحديد الاماكن المحتاجة الى زراعة ,او زراعة الاماكن مباشرة</div>
         </div>
 
     </footer>

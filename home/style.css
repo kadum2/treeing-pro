@@ -147,6 +147,10 @@ header {
     height: auto;
     color: white;
     font-size: 1.3rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .h {
@@ -282,11 +286,6 @@ footer a{
 
 /* newer styling */
 
-/* img{
-    max-width: 10rem;
-    max-height: 10rem;
-} */
-
 
 #beforeImgs img, #afterImgs img, .smType {
     background-image: url("../../Telegram-Logo.png");
@@ -294,8 +293,6 @@ footer a{
     background-position: center;
     height: 100%;
     width: 100%;
-    /* min-width: 10rem;
-    min-height: 10rem; */
 
 }
 #beforeImgs, #afterImgs{
@@ -308,15 +305,6 @@ footer a{
     background: red;
 }
 
-
-
-
-/* add coords background img */
-/* .addCoords {
-    background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-green.png?raw=true");
-    background-position: center;
-    background-size: cover;
-} */
 #addUnconUnfinishedCoords{
     background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-red.png?raw=true");
     background-position: center;
@@ -348,6 +336,14 @@ footer a{
     background: #0f110f;
     /* background: #19652E; */
 }
+.suggest{
+    all: unset;
+    background: #33a353;
+    border-radius: .8rem;
+    cursor: pointer;
+    padding: .4rem;
+    display: none;
+}
 
 
 #beforeandafter{
@@ -375,5 +371,11 @@ footer a{
     background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-yellow.png?raw=true");
     background-size: cover;
     background-position: center;
+}
+
+
+.pins{
+    display: flex;
+    justify-content: space-around;
 }
 
