@@ -41,6 +41,16 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
             popupAnchor: [0, -30] 
         });
 
+        let nextCampPin = L.icon({
+            iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-yellow.png?raw=true",
+            shadowSize: [50, 64], // size of the shadow
+            shadowAnchor: [4, 62], // the same for the shadow
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [0, -30] 
+
+        });
+
 
 
 /////data containers and main elements 
@@ -50,6 +60,10 @@ let currentId
 let currentM
 let message = document.querySelector("#message")
 let m
+
+let pathObjects = []
+let pathList 
+
 
 
 
@@ -114,6 +128,13 @@ L.Control.geocoder().addTo(map);
     insertLocs(pfinishing,"conFinish", finishingPin, true)
 
 
+    ////get the routes 
+    ///fetching data; 
+        let d = await fetch("/confirmed")
+        pathList = await d.json()
+        console.log(pathList)
+
+
 }
 
 
@@ -124,9 +145,11 @@ let beforeImgsElements = []
 let afterImgsElements = []
 
 //////data lists to send 
+        // let m 
 
 let toConfirm = []
 let toDelete = []
+let nextCamp
 
 
 function insertLocs (dataList,confType ,pin, thirdOption){
@@ -144,18 +167,33 @@ function insertLocs (dataList,confType ,pin, thirdOption){
         pANames =  pANames.join("").replace(/,/g, '')
     
 
-        let m 
-        if(pin){
-            m = L.marker(e.coords, {
-                icon: pin, 
-                popupAnchor: [-10, -30] 
-            }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}`).addTo(map)
-            // m;
-        
-        }else{
+
+        if(pin){ /////no need for else 
+            if(pin == conUnfinished &&e.next == true ){
+                    // m = L.marker(e.coords, {
+                    //     icon: nextCampPin, 
+                    //     popupAnchor: [-10, -30] 
+                    // }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}<br><h2>التوقيت</h2><br>${e.campDate}`).addTo(map)
+
+                    console.log(".......using the yellow pin.............")
+
+                    m = L.marker(e.coords, {
+                        icon: nextCampPin, 
+                        popupAnchor: [-10, -30] 
+                    }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}`).addTo(map)
+            }else{
+                m = L.marker(e.coords, {
+                    icon: pin, 
+                    popupAnchor: [-10, -30] 
+                }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}`).addTo(map)
+                // m;
+            }
+        }else{ ////no need for this 
             m = L.marker(e.coords).addTo(map).bindPopup(`<h3>?❤المساهمين</h3>${pBName}<br>${pANames}`);
         }
-        m.addEventListener("click", (e)=>{
+
+        console.log(m)
+        m.addEventListener("click", (eee)=>{
 
             document.querySelector("#beforeImgs").innerHTML = ""
             // document.querySelector("#bContributers").innerHTML = "" 
@@ -163,7 +201,7 @@ function insertLocs (dataList,confType ,pin, thirdOption){
             // document.querySelector("#aContributers").innerHTML = "" 
 
             linkedList.forEach(ee=>{
-                if(ee.m == e.target){
+                if(ee.m == eee.target){
                     currentId = ee.id
                     currentM = ee.m
 
@@ -177,9 +215,6 @@ function insertLocs (dataList,confType ,pin, thirdOption){
                     document.querySelector("#details").textContent = ""
                     ee.dateOfPlanting?document.querySelector("#date").textContent = ee.dateOfPlanting:null
                     ee.moreDetails?document.querySelector("#details").textContent = ee.moreDetails:null
-
-
-
 
                     ////beforeImgs inserting; three imgs
                     for(let i = 0; i<3; i++){
@@ -232,6 +267,7 @@ function insertLocs (dataList,confType ,pin, thirdOption){
 
                         let del = document.createElement("button")
                         del.textContent = "delete"
+                        del.classList.add("red")
                         del.addEventListener("click", (e)=>{
                             document.querySelector("#beforeImgs").innerHTML = ""
                             document.querySelector("#afterImgs").innerHTML = ""
@@ -242,6 +278,20 @@ function insertLocs (dataList,confType ,pin, thirdOption){
 
                         })
                         document.querySelector("#buttons").append(del)
+
+                        if(e.next == false || e.next == true){
+                            console.log("next prop")
+
+                            let makeNext = document.createElement("button")
+                            makeNext.classList.add("makeNextBtn")
+                            makeNext.textContent = "القادمة"
+                            makeNext.addEventListener("click", (e)=>{
+                                nextCamp = currentId
+                            })
+                            document.querySelector("#buttons").append(makeNext)
+                        }else{
+                            console.log("no next prop")
+                        }
 
                     }
                 }
@@ -365,23 +415,88 @@ function insertLocs (dataList,confType ,pin, thirdOption){
 
 /////adding loc
 
+//////new method; 
 document.querySelectorAll(".addCoords").forEach(e=>{
-e.onclick = () => {
-    document.querySelector(".addCoords").classList.toggle("red")
-}})
-
+    e.addEventListener("click", (ee)=>{
+        ee.target.classList.toggle("red")
+        ee.target.getAttribute("id") == "addUnconUnfinishedCoords"?currentPin = conUnfinished:currentPin=conFinished
+    })
+})
 map.addEventListener('click', function (ev) {
-    m?map.removeLayer(m):null
-    if (addUnconUnfinishedCoords.classList.contains("red")) {
+    currentM?map.removeLayer(currentM):null
+
+    if(document.querySelector("#addUnconUnfinishedCoords").classList.contains("red") || document.querySelector("#addUnconFinishedCoords").classList.contains("red")){
         let latlng = map.mouseEventToLatLng(ev.originalEvent);
         let i = [latlng.lat, latlng.lng]
-        m = L.marker(i, {
-            icon: uncon
+        currentM = L.marker(i, {
+            icon: currentPin
         }).addTo(map);
-
-        currentCoords = i
+        currentCoords = i    
     }
 });
+
+
+
+//////display project 1 lines 
+
+function displayLines (pd){
+    console.log("get routes; ", pd)
+    
+    Object.values(pd).forEach(e=>console.log(e.path))
+
+    ///deploy them; store
+    Object.values(pd).forEach(e => {
+
+        let obje 
+
+        if(typeof e.path[0]!="number"){
+
+            console.log(e.path)
+            obje = L.polyline(e.path, {
+                // color: "red",
+            }).addTo(map)
+            // oldObjects.push(pathId) //dont need old objects
+            // pathob.addEventListener("click", (e) => console.log(e.target))
+        } else { ////labels part 
+            console.log("....label....")
+
+            obje = L.circle(e.path, {
+                fillColor: '#3388FF',
+                fillOpacity: 0.8,
+                radius: 100
+            }).addTo(map)
+        }
+
+        pathObjects.push(obje)
+        obje.addEventListener("mouseover", (e)=>{
+            pathObjects.forEach(e=>{e.setStyle({color: "#3388FF", fillColor: "#3388FF"})})
+            e.target.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
+        })
+        obje.addEventListener("click", (e)=>{
+            pathObjects.forEach(e=>{e.setStyle({color: "#3388FF", fillColor: "#3388FF"})})
+            e.target.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
+        })
+    })
+}
+function hideLines(pd){
+    pd.forEach(e=>{
+        map.removeLayer(e)
+    })
+}
+
+
+//////button that shows the lines 
+document.querySelector("#displaylines").addEventListener("click", (e)=>{
+    console.log(e.target.classList)
+
+    e.target.classList.toggle("add")
+    if(e.target.classList.contains("add")){
+        displayLines(pathList)
+    }else{
+        hideLines(pathObjects)
+    }
+})
+
 
 
 ////send data 
@@ -480,7 +595,7 @@ document.querySelector("#send-mode").addEventListener("click", async (e)=>{
     let sent = await fetch("/send-mode", {
         method: "POST", 
         headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify({toConfirm, toDelete})
+        body: JSON.stringify({toConfirm, toDelete, nextCamp})
     })
 
     toConfirm = []

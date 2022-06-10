@@ -397,6 +397,12 @@ footer a{
     background: #0f110f;
     /* background: #19652E; */
 }
+.makeNextBtn{
+    background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-yellow.png?raw=true");
+    background-size: cover;
+    background-position: center;
+}
+
 
 
 

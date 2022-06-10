@@ -32,6 +32,16 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
 
         });
 
+        let nextCampPin = L.icon({
+            iconUrl: "https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-yellow.png?raw=true",
+            shadowSize: [50, 64], // size of the shadow
+            shadowAnchor: [4, 62], // the same for the shadow
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [0, -30] 
+        });
+
+
 
 
 
@@ -41,6 +51,7 @@ let currentCoords
 let currentId
 let message = document.querySelector("#message")
 let m
+let currentM
 
 let pathObjects = []
 let pathList 
@@ -175,10 +186,23 @@ function insertLocs (dataList, pin, thirdOption){
         pANames =  pANames.join("").replace(/,/g, '')
     
 
-        let m = L.marker(e.coords, {
-            icon: pin
-        }).addTo(map).bindPopup(`<h3> ❤المساهمين </h3>${pBName}<br>${pANames}`);
+        // let m
+        if(e.next == true){
+                    // m = L.marker(e.coords, {
+                    //     icon: nextCampPin, 
+                    //     popupAnchor: [-10, -30] 
+                    // }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}<br><h2>التوقيت</h2><br>${e.campDate}`).addTo(map)
 
+                    m = L.marker(e.coords, {
+                        icon: nextCampPin, 
+                        popupAnchor: [-10, -30] 
+                    }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}`).addTo(map)
+
+        }else{
+            m = L.marker(e.coords, {
+                icon: pin
+            }).addTo(map).bindPopup(`<h3> ❤المساهمين </h3>${pBName}<br>${pANames}`);
+        }
         m.addEventListener("click", (e)=>{
 
             document.querySelector("#beforeImgs").innerHTML = ""
@@ -263,23 +287,97 @@ function insertLocs (dataList, pin, thirdOption){
 
 
 /////adding loc
+// document.querySelectorAll(".addCoords").forEach(e=>{
+//     e.onclick = () => {
+//         document.querySelector(".addCoords").classList.toggle("red")
+//     }})
+    
+//     map.addEventListener('click', function (ev) {
+//         m?map.removeLayer(m):null
+//         if (addUnconUnfinishedCoords.classList.contains("red")) {
+//             let latlng = map.mouseEventToLatLng(ev.originalEvent);
+//             let i = [latlng.lat, latlng.lng]
+//             m = L.marker(i, {
+//                 icon: uncon
+//             }).addTo(map);
+    
+//             currentCoords = i
+//         }
+//     });
+
+        let currentPin
+
+
+// document.querySelectorAll(".addCoords").forEach(e=>{
+//     e.onclick = () => {
+//         e.classList.toggle("red")
+//         console.log(e)
+
+//         e.getAttribute("id", "addUnconUnfinishedCoords")?currentPin = conUnfinished:currentPin = conFinished;
+
+//         // currentPin = 
+//         // document.querySelector(".addCoords").classList.toggle("red")
+//     }})
+    
+//     map.addEventListener('click', function (ev) {
+//         currentM?map.removeLayer(currentM):null
+//         let allowCoord
+
+//         // document.querySelectorAll(".addCoords").forEach(e=>{
+//         //     console.log(e)
+//         //     if (e.classList.contains("red")){
+//         //         allowCoord = true
+//         //         e.getAttribute("id", "addUnconUnfinishedCoords")?pin = conUnfinished:pin = conFinished;
+//         //     }else{
+//         //         allowCoord = false
+//         //     }
+//         // })
+
+//         console.log([...document.querySelectorAll(".addCoords")].filter(e=>e.classList.contains("red")))
+//         if([...document.querySelectorAll(".addCoords")].filter(e=>e.classList.contains("red"))){
+//             allowCoord = true
+//             // ev.getAttribute("id", "addUnconUnfinishedCoords")?pin = conUnfinished:pin = conFinished;
+//         }else{
+//             allowCoord = false
+//         }
+
+//         // console.log(document.querySelectorAll(".addCoords").find(e=>e.classList.contains("red")))
+        
+
+//         console.log(allowCoord)
+//         if(allowCoord){
+//             let latlng = map.mouseEventToLatLng(ev.originalEvent);
+//             let i = [latlng.lat, latlng.lng]
+//             currentM = L.marker(i, {
+//                 icon: currentPin
+//             }).addTo(map);
+//             currentCoords = i    
+//         }
+//     });
+
+
+//////new method; 
 document.querySelectorAll(".addCoords").forEach(e=>{
-    e.onclick = () => {
-        document.querySelector(".addCoords").classList.toggle("red")
-    }})
-    
-    map.addEventListener('click', function (ev) {
-        m?map.removeLayer(m):null
-        if (addUnconUnfinishedCoords.classList.contains("red")) {
-            let latlng = map.mouseEventToLatLng(ev.originalEvent);
-            let i = [latlng.lat, latlng.lng]
-            m = L.marker(i, {
-                icon: uncon
-            }).addTo(map);
-    
-            currentCoords = i
-        }
-    });
+    e.addEventListener("click", (ee)=>{
+        ee.target.classList.toggle("red")
+        ee.target.getAttribute("id") == "addUnconUnfinishedCoords"?currentPin = conUnfinished:currentPin=conFinished
+    })
+})
+map.addEventListener('click', function (ev) {
+    currentM?map.removeLayer(currentM):null
+
+    if(document.querySelector("#addUnconUnfinishedCoords").classList.contains("red") || document.querySelector("#addUnconFinishedCoords").classList.contains("red")){
+        let latlng = map.mouseEventToLatLng(ev.originalEvent);
+        let i = [latlng.lat, latlng.lng]
+        currentM = L.marker(i, {
+            icon: currentPin
+        }).addTo(map);
+        currentCoords = i    
+    }
+});
+
+
+
 
 ////send data 
 

@@ -219,7 +219,8 @@ app.post("/con-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = []; n
                     bName: req.body.names, 
                     beforeImgs: beforeImgs,
                     afterImgs: afterImgs, 
-                    aNames: []
+                    aNames: [], 
+                    next: false
                 })
                 })
             res.sendStatus(200)
@@ -338,7 +339,13 @@ app.post("/send-mode", async (req, res)=>{
             }
         })
 
-    })  
+        if(req.body.nextCamp){
+            let preValue = await dbb.collection("con-unfinished").findOne({_id: ObjectID(req.body.nextCamp)})
+            console.log("........prev value........")
+            console.log(preValue)
+            dbb.collection("con-unfinished").findOneAndUpdate({_id: ObjectID(req.body.nextCamp)},{$set:{next: !preValue.next}})
+        }
+    })
 }
 
 })
