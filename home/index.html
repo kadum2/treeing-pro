@@ -19,8 +19,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-
-
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -61,12 +59,13 @@
             </div>
         </div>
         <div id="map"></div>
-        <div>
-            <button id="displaylines" style="font-size: 1.5rem;" disabled="true">اظهار المسارات</button>
+
+        <div id="displayLines" class="flex">
+            <button id="displaylines" style="font-size: 1.5rem;" disabled="true">اظهار المسارات(النقل العام) </button>
             <a href="https://coaster-route-polyline.herokuapp.com" target="_blank" class="suggest">اضافة مسارات</a>
         </div>
-
         <div id="message"></div>
+
         <div class="form" id="add">
             <b>ثلاث صور بزوايا مختلفة</b>
 
@@ -117,7 +116,7 @@
 
     <div class="step f">
 
-        <div id="desc">
+        <div id="howtouse">
             طريقة الاستخدام:
             <div class="flex">
                 <span><img src="../marker-icon-2x-red.png">اماكن تحتاج الى
@@ -126,6 +125,7 @@
                 </span>
                 <span><img src="../marker-icon-2x-yellow.png">مكان الحملة القادمة </span>
             </div>
+
 
             <div>**بعد اضافة مكان و ارساله مع الصور فان هذا المكان لا يوضع على الخريطة مباشرة, بل يتم ارساله الى ادمن
                 (فريق
@@ -136,7 +136,7 @@
             </div>
 
         </div>
-        <div id="desc">
+        <div id="thegoal">
             الغرض من الموقع:
             <!-- <div>موقع لتسهيل حملات التشجير:</div>
             <div>- تسيهل تحديد الاماكن التي تحتاج الى حملات تشجير</div>
@@ -144,7 +144,15 @@
             <div>توضيح التقدم في حملات التشجير</div>
             <div>تمكين الناس من المشاركة: في تحديد الاماكن المحتاجة الى زراعة ,او زراعة الاماكن مباشرة</div>
         </div>
-
+        <div id="deploy">
+            صور توضيحية:
+            <div>
+                لتحديد المكان الذي يحتاج زراعة:
+            </div>
+            <div>
+                لكيفية الزراعة:
+            </div>
+        </div>
 
     </div>
     <footer>

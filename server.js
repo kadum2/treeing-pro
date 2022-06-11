@@ -406,7 +406,6 @@ app.post("/make-finishing", (req, res, next)=>{beforeImgs= []; afterImgs = []; n
 })
 
 
-
 ////////get the lines from the coaster route project 
 ///MONGOKEY2
 
