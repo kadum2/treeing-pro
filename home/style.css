@@ -305,25 +305,6 @@ footer a{
     background: red;
 }
 
-#addUnconUnfinishedCoords{
-    background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-red.png?raw=true");
-    background-position: center;
-    background-size: cover;
-}
-.exp{
-    height: 3rem;
-    width: 2rem;
-    font-size: 2rem;
-}
-
-
-#addUnconFinishedCoords{
-    background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-green.png?raw=true");
-    background-position: center;
-    background-size: cover;
-
-}
-
 #coaster-route, #gitrepo, #desc{
     /* background: #29D659; */
     background: #33a353;
@@ -336,6 +317,18 @@ footer a{
     background: #0f110f;
     /* background: #19652E; */
 }
+
+
+#addUnconFinishedCoords, #addUnconUnfinishedCoords {
+    background-image: url("../marker-icon-2x-red.png");
+    background-position: center;
+    background-size: cover;
+}
+#addUnconUnfinishedCoords{
+    background-image: url("../marker-icon-2x-green.png");
+}
+
+
 .suggest{
     all: unset;
     background: #33a353;
@@ -363,19 +356,17 @@ footer a{
     font-size: 1.4rem;
 }
 
-#displaylines{
-
-}
-
-.makeNextBtn{
-    background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-yellow.png?raw=true");
-    background-size: cover;
-    background-position: center;
-}
-
-
-.pins{
+.flex{
     display: flex;
     justify-content: space-around;
 }
+
+
+footer img, .step img{
+    /* height: 2rem; */
+    width: 2rem;
+    background-position: center;
+    background-size: contain;
+}
+
 

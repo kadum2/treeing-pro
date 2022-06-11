@@ -152,9 +152,10 @@ header {
     width: 4rem;
 }
 
-.step {
+.step *{
     height: 5vh;
     padding: 0 2rem;
+    direction: rtl;
 }
 
 .h {
@@ -353,7 +354,6 @@ footer a{
     background-image: url("https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-green.png?raw=true");
     background-position: center;
     background-size: cover;
-
 }
 
 
