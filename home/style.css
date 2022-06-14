@@ -41,14 +41,15 @@
             height: 90%;
             width: 90%;
             flex-direction: row;
+            overflow-x: scroll;
         }
         
         #beforeImgs img, #afterImgs img, .smType {
             background-image: url("../../Telegram-Logo.png");
             background-size: cover;
             background-position: center;
-            height: 100%;
-            width: 100%;
+            min-height: 100%;
+            min-width: 33%;
         }
         #beforeImgs, #afterImgs{
             display: flex;

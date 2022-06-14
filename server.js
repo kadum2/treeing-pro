@@ -9,6 +9,7 @@ let bodyParser = require('body-parser')
 let cookieParser = require("cookie-parser")
 let mongodb = require("mongodb").MongoClient  ///mongodb atlas
 let { ObjectID } = require("bson") 
+let fs = require("fs")
 
 app.use(cookieParser())
 app.use(cors())    /////to remove 
@@ -272,9 +273,6 @@ app.post("/send-mode", async (req, res)=>{
     console.log(req.body)
     console.log(typeof req.body.toDelete)
     if(req.cookies.modeAuth == process.env.MODEAUTH){
-    
-    
-    
     mongodb.connect(process.env.MONGOKEY, async (err, client)=>{
         let dbb = client.db()
 
@@ -291,6 +289,14 @@ app.post("/send-mode", async (req, res)=>{
                     dateOfPlanting: "",
                     aNames: []
                 })
+
+                deFinish.afterImgs.forEach(ee=>{
+                    try{
+                        fs.unlinkSync("./public-imgs/"+ e)
+                    }catch (err){
+                        console.log("in catch; "+err)
+                    }
+                })
                 await dbb.collection("finishing").findOneAndDelete({_id: ObjectID(e)})
                 res.sendStatus(200)
 
@@ -306,9 +312,31 @@ app.post("/send-mode", async (req, res)=>{
             }else if(await dbb.collection("con-finished").findOne({_id: ObjectID(e)})){
                 todel = "con-finished"
             }
-            let result = await dbb.collection(todel).findOneAndDelete({_id: ObjectID(e)})
 
-            
+            //////////remove the img from the server storage
+            let result = await dbb.collection(todel).findOne({_id: ObjectID(e)})
+            result.beforeImgs.forEach(e=>{
+                console.log("the imgs to be deleted from server store; "+ e)
+                try{
+                    fs.unlinkSync("./public-imgs/"+ e)
+                    console.log("in fs")
+                }catch (err){
+                    console.log("in catch; "+err)
+                }
+            })
+            if(result.afterImgs[0]){
+                result.beforeImgs.forEach(e=>{
+                    try{
+                        fs.unlinkSync(e)
+                        console.log("in fs")
+                    }catch (err){
+                        console.log("in catch; "+err)
+                    }
+                })
+            }
+
+            await dbb.collection(todel).findOneAndDelete({_id: ObjectID(e)})
+
         })
 
 

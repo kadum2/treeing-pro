@@ -237,10 +237,15 @@ function insertLocs (dataList, pin, thirdOption){
 
                     currentM = ee.m
                     currentId = ee.id
-                    for(let i = 0; i<3; i++){
-                        document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
-                    }
 
+                    console.log(ee.beforeImgsElements)
+                    ee.beforeImgsElements.forEach(i=>{
+                        document.querySelector("#beforeImgs").append(i)
+                    })
+                    // for(let i = 0; i<3; i++){
+                    //     document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
+                    // }
+                    
                     //////before contributers
                     // document.querySelector("#bContributers").innerHTML = `
                     // <div class="contri">
@@ -249,9 +254,13 @@ function insertLocs (dataList, pin, thirdOption){
 
                     /////after;
                     if(ee.afterImgsElements[0]){
-                        for(let i = 0; i<3; i++){
-                            document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
-                        }
+                        ee.afterImgsElements.forEach(i=>{
+                            document.querySelector("#afterImgs").append(i)
+                        })
+
+                        // for(let i = 0; i<3; i++){
+                        //     document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
+                        // }
                     }else{
                         document.querySelector("#afterImgs").innerHTML = `<h1> قريبا </h1>`
                     }
@@ -274,14 +283,21 @@ function insertLocs (dataList, pin, thirdOption){
 
         if(e.afterImgs[0]){
 
-            for(let i = 0; i<4; i++){
-
+            e.afterImgs.forEach(i=>{
                 let img = document.createElement("img")
                 img.style.backgroundImage = `url('../${e.afterImgs[i]}')`
                 img.style.backgroundSize = "cover"
                 img.style.backgroundPosition = "center"
                 afterImgsElements.push(img)
-            }
+            })
+
+            // for(let i = 0; i<4; i++){
+            //     let img = document.createElement("img")
+            //     img.style.backgroundImage = `url('../${e.afterImgs[i]}')`
+            //     img.style.backgroundSize = "cover"
+            //     img.style.backgroundPosition = "center"
+            //     afterImgsElements.push(img)
+            // }
         }
 
         linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames, thirdOption,dateOfPlanting:e.dateOfPlanting, moreDetails: e.moreDetails})

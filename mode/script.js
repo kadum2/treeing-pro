@@ -11,7 +11,7 @@ const map = L.map('map').setView([33.396600, 44.356579], 9); //leaflet basic map
             shadowAnchor: [4, 62], // the same for the shadow
             iconSize: [25, 41],
             iconAnchor: [12, 41],
-
+            popupAnchor: [0, -30] 
         });
 
         ////getting icon; icon is special object not just an image
@@ -211,7 +211,6 @@ function insertLocs (dataList,confType ,pin, thirdOption){
                     console.log(ee.thirdOption) 
                     ee.thirdOption?document.querySelector("#sendFinishing").setAttribute("disabled", true):document.querySelector("#sendFinishing").removeAttribute("disabled")
 
-
                     ///////more info display; 
                     document.querySelector("#date").textContent = ""
                     document.querySelector("#details").textContent = ""
@@ -219,14 +218,20 @@ function insertLocs (dataList,confType ,pin, thirdOption){
                     ee.moreDetails?document.querySelector("#details").textContent = ee.moreDetails:null
 
                     ////beforeImgs inserting; three imgs
-                    for(let i = 0; i<3; i++){
-                        document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
-                    }
+                    ee.beforeImgsElements.forEach(i=>{
+                        document.querySelector("#beforeImgs").append(i)
+                    })
+                    // for(let i = 0; i<3; i++){
+                    //     document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
+                    // }
                     /////after;
                     if(ee.afterImgsElements[0]){
-                        for(let i = 0; i<3; i++){
-                            document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
-                        }
+                        ee.afterImgsElements.forEach(i=>{
+                            document.querySelector("#afterImgs").append(i)
+                        })
+                        // for(let i = 0; i<3; i++){
+                        //     document.querySelector("#afterImgs").append(ee.afterImgsElements[i])
+                        // }
     
                     }else{
                         document.querySelector("#afterImgs").innerHTML = `<h1> قريبا </h1>`
@@ -306,21 +311,27 @@ function insertLocs (dataList,confType ,pin, thirdOption){
             img.style.backgroundImage = `url('../${e}')`
             img.style.backgroundSize = "cover"
             img.style.backgroundPosition = "center"
-
             beforeImgsElements.push(img)
         })
         afterImgsElements = []
 
         if(e.afterImgs[0]){
 
-            for(let i = 0; i<4; i++){
-
+            e.afterImgs.forEach(i=>{
                 let img = document.createElement("img")
                 img.style.backgroundImage = `url('../${e.afterImgs[i]}')`
                 img.style.backgroundSize = "cover"
                 img.style.backgroundPosition = "center"
                 afterImgsElements.push(img)
-            }
+            })
+
+            // for(let i = 0; i<4; i++){
+            //     let img = document.createElement("img")
+            //     img.style.backgroundImage = `url('../${e.afterImgs[i]}')`
+            //     img.style.backgroundSize = "cover"
+            //     img.style.backgroundPosition = "center"
+            //     afterImgsElements.push(img)
+            // }
         }
 
         linkedList.push({m:m, beforeImgsElements: beforeImgsElements, id: e._id, afterImgsElements: afterImgsElements, bName: e.bName, aNames: e.aNames, thirdOption,dateOfPlanting:e.dateOfPlanting, moreDetails: e.moreDetails})

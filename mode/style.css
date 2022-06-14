@@ -41,14 +41,20 @@
             height: 90%;
             width: 90%;
             flex-direction: row;
+            overflow-x: scroll;
+
         }
         
         #beforeImgs img, #afterImgs img, .smType {
             background-image: url("../../Telegram-Logo.png");
             background-size: cover;
             background-position: center;
-            height: 100%;
-            width: 100%;
+            /* height: ; */
+            min-height: 100%;
+            min-width: 33%;
+            /* flex-grow: 1; */
+            /* flex: 1 1; */
+
         }
         #beforeImgs, #afterImgs{
             display: flex;
@@ -226,6 +232,22 @@ footer img, .step img{
     background-position: center;
     background-size: contain;
 }
+
+
+#buttons{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 3rem;
+    right: 1.4rem;
+    z-index: 1013;
+}
+.makeNextBtn{
+    background-image: url("../marker-icon-2x-yellow.png");
+    background-size: cover;
+    background-position: center;
+}
+
 
 
 @media all and (max-width: 500px){
