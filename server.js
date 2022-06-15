@@ -23,12 +23,14 @@ app.use(express.static("./public-imgs"))
 app.use("/", express.static("./home"))
 
 app.use("/mode",(req, res, next)=>{
-    if(req.cookies.modeAuth){
+    if(req.cookies.tModeAuth){
         ////send the full page
         console.log(req.cookies.token)
-        if(req.cookies.modeAuth == process.env.MODEAUTH){
+        if(req.cookies.tModeAuth == process.env.MODEAUTH){
             console.log("will send the full page")
-            next()    
+            next()
+        }else{
+            
         }
     }else{
         ////send the cred making 
@@ -52,7 +54,7 @@ app.post("/checkmode", (req, res)=>{
     console.log("check mode .......",req.body)
     /////check if true auth to give a set the cookie
     if(req.body.em == process.env.MODEAUTH){
-        res.cookie("modeAuth", process.env.MODEAUTH);
+        res.cookie("tModeAuth", process.env.MODEAUTH);
         // res.redirect("/mode") ///make a reload instead
         res.redirect(req.get("/mode"))
     }else{
