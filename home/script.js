@@ -245,7 +245,7 @@ function insertLocs (dataList, pin, thirdOption){
                     // for(let i = 0; i<3; i++){
                     //     document.querySelector("#beforeImgs").append(ee.beforeImgsElements[i])
                     // }
-                    
+
                     //////before contributers
                     // document.querySelector("#bContributers").innerHTML = `
                     // <div class="contri">
@@ -285,7 +285,7 @@ function insertLocs (dataList, pin, thirdOption){
 
             e.afterImgs.forEach(i=>{
                 let img = document.createElement("img")
-                img.style.backgroundImage = `url('../${e.afterImgs[i]}')`
+                img.style.backgroundImage = `url('../${i}')`
                 img.style.backgroundSize = "cover"
                 img.style.backgroundPosition = "center"
                 afterImgsElements.push(img)
@@ -327,6 +327,7 @@ map.addEventListener('click', function (ev) {
         currentMm = L.marker(i, {
             icon: currentPin
         }).addTo(map);
+        m = currentMm
         currentCoords = i    
     }
 });

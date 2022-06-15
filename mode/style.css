@@ -112,12 +112,12 @@
         }
         
         #addUnconFinishedCoords, #addUnconUnfinishedCoords {
-            background-image: url("../marker-icon-2x-red.png");
+            background-image: url("../marker-icon-2x-green.png");
             background-position: center;
             background-size: cover;
         }
         #addUnconUnfinishedCoords{
-            background-image: url("../marker-icon-2x-green.png");
+            background-image: url("../marker-icon-2x-red.png");
         }
 
         /* message */
