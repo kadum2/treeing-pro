@@ -135,11 +135,19 @@ function displayLines (pd){
         pathObjects.push(obje)
         obje.addEventListener("mouseover", (e)=>{
             pathObjects.forEach(e=>{e.setStyle({color: "#3388FF", fillColor: "#3388FF"})})
-            e.target.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
+            let i = e.target
+            map.removeLayer(e.target)
+            i.addTo(map)
+            pathObjects.push(i)
+            i.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
         })
         obje.addEventListener("click", (e)=>{
             pathObjects.forEach(e=>{e.setStyle({color: "#3388FF", fillColor: "#3388FF"})})
-            e.target.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
+            let i = e.target
+            map.removeLayer(e.target)
+            i.addTo(map)
+            pathObjects.push(i)
+            i.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
         })
     })
 }
