@@ -280,7 +280,7 @@ function insertLocs (dataList, pin, thirdOption){
         beforeImgsElements = []
         e.beforeImgs.forEach(e=>{
             let img = document.createElement("img")
-            img.style.backgroundImage = `url('../${e}')`
+            img.style.backgroundImage = `url('${e}')`
             img.style.backgroundSize = "cover"
             img.style.backgroundPosition = "center"
 
@@ -293,7 +293,7 @@ function insertLocs (dataList, pin, thirdOption){
 
             e.afterImgs.forEach(i=>{
                 let img = document.createElement("img")
-                img.style.backgroundImage = `url('../${i}')`
+                img.style.backgroundImage = `url('${i}')`
                 img.style.backgroundSize = "cover"
                 img.style.backgroundPosition = "center"
                 afterImgsElements.push(img)
