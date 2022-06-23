@@ -59,6 +59,8 @@ let currentPin
 let pathObjects = []
 let pathList 
 
+let control
+
 /////getting data; fetch confirmed; finished, unifinished 
 ////display data; red and green labels and imgs; based on the ????
 
@@ -78,7 +80,7 @@ window.onload = async ()=>{
     accessToken: apiKey.apiKey
 }).addTo(map);
 
-L.Control.geocoder().addTo(map);
+control = L.Control.geocoder().addTo(map);
 
     //////get con-finished; use green pin, before imgs, after imgs 
 
@@ -341,6 +343,17 @@ map.addEventListener('click', function (ev) {
 });
 
 
+
+
+//////the searching and profile index
+document.addEventListener("click", (e)=>{
+    if (e.target.classList.contains('leaflet-control')){
+        document.querySelector("#profile").style.zIndex = "1"
+    }else{
+        document.querySelector("#profile").style.zIndex = "1002"
+    }
+
+})
 
 
 ////send data 
