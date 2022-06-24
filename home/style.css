@@ -387,13 +387,13 @@ header {
     }
     #profile{
         transform: translateY(0);
-        top: .5rem;
+        /* top: .5rem; */
         width: 100vw;
         height: 32vh;
     }
-    #map{
+    /* #map{
         margin: 6rem 3rem 0 0 ;
-    }
+    } */
     #beforeImgs, #afterImgs{
         max-width: 90vw;
         height: 100%;
