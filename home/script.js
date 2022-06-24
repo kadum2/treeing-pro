@@ -347,7 +347,9 @@ map.addEventListener('click', function (ev) {
 
 //////the searching and profile index
 document.addEventListener("click", (e)=>{
-    if (e.target.classList.contains('leaflet-control')){
+    console.log(e.target)
+
+    if (!e.target.classList.contains('leaflet-marker-icon')){
         document.querySelector("#profile").style.zIndex = "1"
     }else{
         document.querySelector("#profile").style.zIndex = "1002"
