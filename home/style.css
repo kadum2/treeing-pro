@@ -176,6 +176,10 @@ header {
             width: 4rem;
         }
 
+        header button{
+            padding: 1rem;
+        }
+
 
 
     
