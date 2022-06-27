@@ -314,7 +314,7 @@ header {
             border-radius: .2rem;
         }
         
-        label:hover, button:hover, a:hover{
+        label:hover, button:hover{
             background: #33a353;
         }
         input[type=file]{
