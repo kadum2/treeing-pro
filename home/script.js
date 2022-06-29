@@ -473,6 +473,13 @@ document.querySelector("footer").innerHTML = `
     <li>After adding a place (pin) on the map, this place is not added directly to the map; but do require confirming from the admin side (planting volunteer teams) </li>
     <li> @name = telegram username</li>
     <li> the after planting photos have to be in the same angle of the before treeing photos; for the admin to make that both are the same place </li>
+    <li class="redli">
+    This site is a platform: means based on two parties: users and admins,
+    The user sends the data and the admin has the authority to authenticate or delete
+    that Data, the admin is often a volunteer team, has a relationship or experience with the service
+    Who is coming to settle it on the site: Any volunteer team that wants to register as an admin can contact us to get it             
+</li>
+
 </ul>
 </div>
 `
@@ -591,6 +598,14 @@ document.querySelector("footer").innerHTML = `
     <li>صور بعد التشجير يجب ان تكون بنفس زوايا صور قبل التشجير للتأكد ان
         هذا نفس المكان
     </li>
+    <li class="redli">
+    الموقع هاذ هو منصة: يعني بي طرفين: المستخدمين و الادمنز,
+    المستخدم يرسل البيانات و الادمن عندة صلاحية يوثق او حذف
+    البيانات, الادمن غالبا يكون فريق تطوعي الة علاقة او خبرة بالخدمة
+    اللي جاي يسويها الموقع: فأي فريق تطوعي يريد يسجل كأدمن يكدر
+    يتواصل ويانة للحصول
+</li>
+
 </ul>
 </div>
 `
