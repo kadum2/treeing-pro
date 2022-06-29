@@ -297,6 +297,10 @@ header {
             border-radius: .4rem;
             margin-bottom: .2rem;
         }
+        .redli {
+            background: hsla(0, 100%, 58%, 0.623);
+        }
+    
         button{
             cursor: pointer;
             background: #54db7b;
