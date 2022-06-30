@@ -440,7 +440,11 @@ document.querySelector("footer").innerHTML = `
 <div> <img src="./لقطة الشاشة 2022-06-23 185255.png" alt=""> confirm the progress in planting campaigns</div>
 <div> <img src="./لقطة الشاشة 2022-06-23 185458.png" alt=""><img src="./marker-icon-2x-green.png"
         alt=""><img src="./marker-icon-2x-red.png" alt=""> add pins </div>
-<div><img src="./لقطة الشاشة 2022-06-23 185510.png" alt=""><img src="./marker-icon-2x-red.png" alt=""> planting the selected place </div>
+<div>
+<img src="./marker-icon-2x-green.png" alt="">
+<img src="./download-removebg-preview.png" alt="">
+<img src="./لقطة الشاشة 2022-06-23 185510.png" alt="">
+<img src="./marker-icon-2x-red.png" alt=""> planting the selected place </div>
 </div>
 <div id="info">
 <div class="achievements">
@@ -558,7 +562,10 @@ document.querySelector("footer").innerHTML = `
 <div> <img src="./لقطة الشاشة 2022-06-23 185458.png" alt=""><img src="./marker-icon-2x-green.png"
         alt=""><img src="./marker-icon-2x-red.png" alt=""> اضافة
     علامات </div>
-<div><img src="./لقطة الشاشة 2022-06-23 185510.png" alt="">
+<div>
+<img src="./marker-icon-2x-green.png" alt="">
+<img src="./download-removebg-preview.png" alt="">
+<img src="./لقطة الشاشة 2022-06-23 185510.png" alt="">
 <img src="./marker-icon-2x-red.png" alt=""> زراعة
     مكان محدد </div>
 </div>
