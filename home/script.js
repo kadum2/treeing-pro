@@ -204,8 +204,8 @@ function insertLocs (dataList, pin, thirdOption){
 
     dataList.forEach(e=>{
 
-        let pBName = `<p>${e.bName}</p>`
-        let pANames= e.aNames.map(ee=>{return "<p>"+ee +"</p>"})
+        let pBName = `<p> <img src="./Telegram-Logo.png" alt=""> ${e.bName}</p>`
+        let pANames= e.aNames.map(ee=>{return "<p> <img src='./Telegram-Logo.png'>"+ee +"</p>"})
         pANames =  pANames.join("").replace(/,/g, '')
     
 
@@ -216,10 +216,31 @@ function insertLocs (dataList, pin, thirdOption){
                     //     popupAnchor: [-10, -30] 
                     // }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}<br><h2>التوقيت</h2><br>${e.campDate}`).addTo(map)
 
-                    m = L.marker(e.coords, {
-                        icon: nextCampPin, 
-                        popupAnchor: [-10, -30] 
-                    }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}`).addTo(map)
+
+                    if(e.bName){
+                        console.log( "bNames is: "+ pBName, e.bName)
+                        m = L.marker(e.coords, {
+                            icon: nextCampPin, 
+                            popupAnchor: [-10, -30] 
+                        }).bindPopup(`<h3> ❤المساهمين</h3>${pBName}<br>${pANames}`).addTo(map)
+
+                    }else{
+                        console.log( "bNames is: "+ pBName, e.bName)
+
+                        m = L.marker(e.coords, {
+                            icon: nextCampPin, 
+                            popupAnchor: [-10, -30] 
+                        }).bindPopup(`<h3> ❤المساهمين</h3>${pANames}`).addTo(map)
+    
+                    }
+
+                    // console.log( "bNames is: "+ pBName, e.bName)
+
+                    // m = L.marker(e.coords, {
+                    //     icon: nextCampPin, 
+                    //     popupAnchor: [-10, -30] 
+                    // }).bindPopup(`<h3> ❤المساهمين</h3>${pANames}`).addTo(map)
+
 
         }else{
             m = L.marker(e.coords, {

@@ -74,6 +74,9 @@ header {
             border-radius: .6rem;
         }
         
+        main img{
+            height: 1rem;
+        }
         #beforeandafter{
             justify-content: space-between;
             gap: 1.5rem;
@@ -360,7 +363,8 @@ header {
         
         .white {
             background: rgb(245, 245, 245);
-        }        .flex{
+        }        
+        .flex{
             display: flex;
             justify-content: space-around;
         }
