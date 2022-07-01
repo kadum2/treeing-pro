@@ -692,11 +692,32 @@ app.get("/make-finished", (req, res)=>{
 
 /////post; home (uncon)
 
-app.post("/uncon-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), (req, res)=>{
+app.post("/uncon-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()},multerBasic.any(), async (req, res)=>{
 
     console.log(req.body)
     console.log(beforeImgs)
     console.log(afterImgs)
+
+        ///////cloudinary
+        newBImgs= []
+        newAImgs = []
+    
+        if(beforeImgs[0]){
+            for await(let e of beforeImgs) {
+                await cloudinary.uploader.upload("./public-imgs/" + e, result=>newBImgs.push(result.secure_url))
+            }    
+        }
+    
+        if(afterImgs[0]){
+            for await(let e of afterImgs) {
+                await cloudinary.uploader.upload("./public-imgs/" + e, result=>newAImgs.push(result.secure_url))
+            }    
+        }
+    
+        beforeImgs = newBImgs
+        afterImgs = newAImgs
+    
+    
 
     ////if mode save it in con; else in uncon 
         if(typeof beforeImgs[0] == "string" &&typeof afterImgs[0] == "string" ){
@@ -720,8 +741,29 @@ app.post("/uncon-finished", (req, res, next)=>{beforeImgs= []; afterImgs = []; n
         }
 })
 
-app.post("/uncon-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()}, multerBasic.any(), (req, res)=>{
+app.post("/uncon-unfinished", (req, res, next)=>{beforeImgs= []; afterImgs = []; next()}, multerBasic.any(), async (req, res)=>{
     console.log(req.body)
+
+        ///////cloudinary
+        newBImgs= []
+        newAImgs = []
+    
+        if(beforeImgs[0]){
+            for await(let e of beforeImgs) {
+                await cloudinary.uploader.upload("./public-imgs/" + e, result=>newBImgs.push(result.secure_url))
+            }    
+        }
+    
+        if(afterImgs[0]){
+            for await(let e of afterImgs) {
+                await cloudinary.uploader.upload("./public-imgs/" + e, result=>newAImgs.push(result.secure_url))
+            }    
+        }
+    
+        beforeImgs = newBImgs
+        afterImgs = newAImgs
+    
+    
 
     ////if mode save it in con; else in uncon 
         if(typeof beforeImgs[0] == "string"){
