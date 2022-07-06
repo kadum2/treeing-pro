@@ -152,6 +152,9 @@ function displayLines (pd){
             i.setStyle({color:"rgb(223, 39, 39)", fillColor: "rgb(223, 39, 39)"})
         })
     })
+
+
+    
 }
 function hideLines(pd){
     pd.forEach(e=>{
