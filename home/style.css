@@ -411,6 +411,9 @@ header {
     footer{
         flex-direction: column;
     }
+    footer img{
+        max-width: 100%;
+    }
 }
 
 
