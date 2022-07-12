@@ -75,7 +75,7 @@ app.use("/", express.static("./home"))
 // })
 
 ///////////////non auth admin
-app.use("/admin", express.static("./mode"))
+app.use("/group", express.static("./mode"))
 
 
 //////multer; middleware to reset the imgs container 
