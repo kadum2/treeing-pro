@@ -93,7 +93,6 @@ header {
         }
         
         #beforeImgs img, #afterImgs img, .smType {
-            background-image: url("../../Telegram-Logo.png");
             background-size: cover;
             background-position: center;
             min-height: 100%;
@@ -401,7 +400,6 @@ header {
         max-height: 10rem;
     }
     #beforeImgs img, #afterImgs img, .smType {
-        background-image: url("../../Telegram-Logo.png");
         background-size: cover;
         background-position: center;
         min-width: 10rem;
