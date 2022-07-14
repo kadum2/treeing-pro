@@ -34,45 +34,45 @@ app.use("/", express.static("./home"))
 
 /////////auth admin
 
-// app.use("/admin",(req, res, next)=>{
-//     if(req.cookies.tModeAuth){
-//         ////send the full page
-//         console.log(req.cookies.token)
-//         if(req.cookies.tModeAuth == process.env.MODEAUTH){
-//             console.log("will send the full page")
-//             next()
-//         }else{
+app.use("/admin",(req, res, next)=>{
+    if(req.cookies.tModeAuth){
+        ////send the full page
+        console.log(req.cookies.token)
+        if(req.cookies.tModeAuth == process.env.MODEAUTH){
+            console.log("will send the full page")
+            next()
+        }else{
             
-//         }
-//     }else{
-//         ////send the cred making 
-//         res.send(`    <input type="text" name="" id="em" placeholder="em">
-//         <button onclick="fetch('/checkmode', {
-//             method:'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 em: document.querySelector('#em').value,
-//             })
-//         })
-//     ">send</button>
-//     `)
-//     }
-// }, express.static("./mode"))
+        }
+    }else{
+        ////send the cred making 
+        res.send(`    <input type="text" name="" id="em" placeholder="em">
+        <button onclick="fetch('/checkmode', {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                em: document.querySelector('#em').value,
+            })
+        })
+    ">send</button>
+    `)
+    }
+}, express.static("./mode"))
 
 
-// app.post("/checkmode", (req, res)=>{
-//     console.log("check mode .......",req.body)
-//     /////check if true auth to give a set the cookie
-//     if(req.body.em == process.env.MODEAUTH){
-//         res.cookie("tModeAuth", process.env.MODEAUTH);
-//         // res.redirect("/mode") ///make a reload instead
-//         res.redirect(req.get("/admin"))
-//     }else{
-//         res.sendStatus(400)
-//     }
-// })
+app.post("/checkmode", (req, res)=>{
+    console.log("check mode .......",req.body)
+    /////check if true auth to give a set the cookie
+    if(req.body.em == process.env.MODEAUTH){
+        res.cookie("tModeAuth", process.env.MODEAUTH);
+        // res.redirect("/mode") ///make a reload instead
+        res.redirect(req.get("/admin"))
+    }else{
+        res.sendStatus(400)
+    }
+})
 
 ///////////////non auth admin
 app.use("/group", express.static("./mode"))
