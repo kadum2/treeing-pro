@@ -75,7 +75,7 @@ app.post("/checkmode", (req, res)=>{
 })
 
 ///////////////non auth admin
-app.use("/group", express.static("./mode"))
+// app.use("/group", express.static("./mode"))
 
 
 //////multer; middleware to reset the imgs container 
